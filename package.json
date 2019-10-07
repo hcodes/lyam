@@ -1,0 +1,48 @@
+{
+  "name": "lyam",
+  "description": "Light Ya.Metrika for sites",
+  "version": "1.0.0",
+  "author": {
+    "name": "Denis Seleznev",
+    "email": "hcodes@yandex.ru",
+    "url": "https://github.com/hcodes/lyam"
+  },
+  "main": "dist/index.esm.js",
+  "module": "dist/index.esm.js",
+  "homepage": "https://github.com/hcodes/lyam",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hcodes/lyam.git"
+  },
+  "keywords": [
+    "light",
+    "yandex",
+    "yandex-metrika",
+    "metrika"
+  ],
+  "engines": {
+    "node": ">= 8"
+  },
+  "typings": "./typings/index.d.ts",
+  "files": [
+    "src",
+    "dist/*.js",
+    "typings",
+    "README.md",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
+    "@typescript-eslint/parser": "^2.3.2",
+    "eslint": "^6.5.1",
+    "rollup": "^1.23.1",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^1.10.0",
+    "typescript": "^3.6.3"
+  },
+  "scripts": {
+    "test": "eslint --ext .ts .",
+    "build": "rollup src/index.ts --config rollup.config.js --file dist/index.esm.js --format esm"
+  }
+}

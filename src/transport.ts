@@ -1,12 +1,12 @@
 import { queryStringify } from './url';
 
-interface IQueryParams {
+interface QueryParams {
     [key: string]: string;
 }
 
-const METRIKA_URL = 'mc.yandex.ru/watch/';
+const METRIKA_URL = 'https://mc.yandex.ru/watch/';
 
-export function sendData(counterId: string, queryParams: IQueryParams) {
+export function sendData(counterId: string, queryParams: QueryParams): void {
     const url = METRIKA_URL
         + counterId
         + '?rn=' + (Math.floor(Math.random() * 1E6))

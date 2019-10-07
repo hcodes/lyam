@@ -1,46 +1,89 @@
-import { getBrowserInfo } from './browserInfo';
-import { getTitle, getPageUrl, getReferrer, getHost } from './dom';
-import { sendData } from './transport';
-import { truncate } from './string';
-
-const MAX_URL_LEN = 1024;
-
-interface DataParams {
-    [key: string]: any;
+const hasDocument = typeof document !== 'undefined';
+const hasWindow = typeof window !== 'undefined';
+function getCharset() {
+    return hasDocument ? document.charset : '';
+}
+function getHost() {
+    return hasWindow ? window.location.hostname : '';
+}
+function getPageUrl() {
+    return hasWindow ? window.location.href : '';
+}
+function getReferrer() {
+    return hasDocument ? document.referrer : '';
+}
+function getTitle() {
+    return hasDocument ? document.title : '';
 }
 
-export function hitExt(params: Lyam.HitExtParams): void {
-    const {
-        browserInfo,
-        counterId,
-        pageParams,
-        requestParams,
-        userVars
-    } = params;
+function truncate(str, len) {
+    return (str || '').slice(len);
+}
 
-    const data: DataParams = {};
+const MAX_TITLE_LEN = 512;
+function getParam(name, value) {
+    return name + ':' + (value === true ? '1' : value);
+}
+function addParam(result, name, value) {
+    if (value !== '' && value !== false && value !== undefined && value !== null) {
+        result.push(getParam(name, value));
+    }
+}
+function getBrowserInfo(params, title) {
+    const result = [];
+    Object.keys(params).forEach((key) => addParam(result, key, params[key]));
+    addParam(result, 'en', getCharset());
+    addParam(result, 'rn', Math.floor(Math.random() * 1E6));
+    addParam(result, 't', truncate(title, MAX_TITLE_LEN));
+    return result.join(':');
+}
 
+function queryStringify(params) {
+    return Object.keys(params)
+        .filter(function (key) {
+        const val = params[key];
+        return val !== '' && val !== undefined && val !== null;
+    })
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+        .join('&');
+}
+
+const METRIKA_URL = 'https://mc.yandex.ru/watch/';
+function sendData(counterId, queryParams) {
+    const url = METRIKA_URL
+        + counterId
+        + '?rn=' + (Math.floor(Math.random() * 1E6))
+        + '&' + queryStringify(queryParams);
+    if (typeof navigator && navigator.sendBeacon) {
+        navigator.sendBeacon(url, ' ');
+    }
+    else if (typeof fetch !== 'undefined') {
+        fetch(url);
+    }
+    else if (typeof Image !== 'undefined') {
+        new Image().src = url;
+    }
+}
+
+const MAX_URL_LEN = 1024;
+function hitExt(params) {
+    const { browserInfo, counterId, pageParams, requestParams, userVars } = params;
+    const data = {};
     if (pageParams.url) {
         data['page-url'] = truncate(pageParams.url, MAX_URL_LEN);
     }
-
     if (pageParams.referrer) {
         data['page-ref'] = truncate(pageParams.referrer, MAX_URL_LEN);
     }
-
     data['browser-info'] = getBrowserInfo(browserInfo, pageParams.title);
-
     if (userVars) {
         data['site-info'] = JSON.stringify(userVars);
     }
-
     Object.keys(requestParams).forEach((key) => {
         data[key] = requestParams[key];
     });
-
     sendData(counterId, data);
 }
-
 /**
  * Отправка хита.
  *
@@ -62,19 +105,16 @@ export function hitExt(params: Lyam.HitExtParams): void {
  *     myParam: 'value'
  * });
  */
-export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Lyam.UserVars): void {
+function hit(counterId, hitParams, userVars) {
     const referrer = hitParams && hitParams.referrer !== undefined ?
         hitParams.referrer :
         getReferrer();
-
     const title = hitParams && hitParams.title !== undefined ?
         hitParams.title :
         getTitle();
-
     const url = hitParams && hitParams.url !== undefined ?
         hitParams.url :
         getPageUrl();
-
     hitExt({
         counterId,
         pageParams: {
@@ -85,7 +125,6 @@ export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Ly
         userVars
     });
 }
-
 /**
  * Достижение цели.
  *
@@ -96,25 +135,23 @@ export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Ly
  * @example
  * reachGoal('123456', 'goalName');
 */
-export function reachGoal(counterId: string, name?: string, userVars?: Lyam.UserVars): void {
+function reachGoal(counterId, name, userVars) {
     let referrer;
     let url;
-
     if (name) {
         referrer = getPageUrl();
         url = `goal://${getHost()}/${name}`;
-    } else {
+    }
+    else {
         referrer = getReferrer();
         url = getPageUrl();
     }
-
     hitExt({
         counterId,
         pageParams: { referrer, url },
         userVars
     });
 }
-
 /**
  * Внешняя ссылка.
  *
@@ -125,12 +162,12 @@ export function reachGoal(counterId: string, name?: string, userVars?: Lyam.User
  * @example
  * extLink('https://example.com');
  */
-export function extLink(counterId: string, link: string, title?: string): void {
+function extLink(counterId, link, title) {
     if (link) {
         hitExt({
             browserInfo: { ln: true },
             counterId,
-            pageParams:  {
+            pageParams: {
                 referrer: getPageUrl(),
                 title,
                 url: link
@@ -139,7 +176,6 @@ export function extLink(counterId: string, link: string, title?: string): void {
         });
     }
 }
-
 /**
  * Загрузка файла.
  *
@@ -150,7 +186,7 @@ export function extLink(counterId: string, link: string, title?: string): void {
  * @example
  * file('123456', 'https://mysite.com/file.zip');
  */
-export function file(counterId: string, file: string, title?: string): void {
+function file(counterId, file, title) {
     if (file) {
         hitExt({
             browserInfo: {
@@ -166,7 +202,6 @@ export function file(counterId: string, file: string, title?: string): void {
         });
     }
 }
-
 /**
  * Параметры визитов.
  *
@@ -176,7 +211,7 @@ export function file(counterId: string, file: string, title?: string): void {
  * @example
  * userVars(counterId, { myParam: 'value' });
  */
-export function userVars(counterId: string, data: Lyam.UserVars): void {
+function userVars(counterId, data) {
     if (data) {
         hitExt({
             browserInfo: { pa: true },
@@ -186,17 +221,18 @@ export function userVars(counterId: string, data: Lyam.UserVars): void {
         });
     }
 }
-
 /**
  * Не отказ.
  *
  * @example
  * notBounce('123456');
  */
-export function notBounce(counterId: string): void {
+function notBounce(counterId) {
     hitExt({
         browserInfo: { nb: true },
         counterId,
         pageParams: {}
     });
 }
+
+export { extLink, file, hit, hitExt, notBounce, reachGoal, userVars };
