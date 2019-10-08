@@ -1,7 +1,7 @@
 # Лёгкая Я.Метрика
 
 ## Мотивация
-[Скрипт Метрики](https://mc.yandex.ru/metrika/tag.js) занимает более 90 КБ, для лёгких страниц и небольших пакетов он громозкий.
+[Скрипт Метрики](https://mc.yandex.ru/metrika/tag.js) занимает более 90 КБ, для лёгких страниц и небольших пакетов он громоздкий.
 
 ## Преимущества
 - Сверхмалый размер кода.
@@ -13,15 +13,26 @@
 ```js
 import { hit } from 'lyam';
 
-hit('12345'); // Тоже самое, что и hit('12345', { url: window.location.href, title: document.title, referrer: document.referrer });
+/**
+ * Краткая запись.
+ * Тоже самое, что и
+ * hit('12345', {
+ *    url: window.location.href,
+ *    title: document.title,
+ *   referrer: document.referrer
+ * });
+ */
+hit('12345');
 
-// or
+// или
 
+// Полная запись.
+const userVars = { myParam: 123 };
 hit('12345', {
   referrer: 'https://anothersite.ru',
   title: 'My document title',
   url: 'https://mysite.ru'
-});
+}, userVars);
 
 ```
 
@@ -36,7 +47,7 @@ hit(counterId);
 
 // ...
 
-reachGoal(counterId, 'MY_GOAL');
+reachGoal(counterId, 'MY_GOAL_NAME');
 ```
 
 ## Лицензия
