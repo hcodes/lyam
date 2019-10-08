@@ -1,7 +1,7 @@
 {
   "name": "lyam",
   "description": "Light Ya.Metrika for sites",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
@@ -24,7 +24,7 @@
   "engines": {
     "node": ">= 8"
   },
-  "typings": "./typings/index.d.ts",
+  "types": "typings/index.d.ts",
   "files": [
     "src",
     "dist/*.js",
@@ -43,6 +43,8 @@
   },
   "scripts": {
     "test": "eslint --ext .ts .",
-    "build": "rollup src/index.ts --config rollup.config.js --file dist/index.esm.js --format esm"
+    "test-counter": "tsc",
+    "build": "rollup src/index.ts --config rollup.config.js --file dist/index.esm.js --format esm",
+    "build:test": "rollup test/test.ts --config rollup.config.js --file dist/test.js --format umd"
   }
 }
