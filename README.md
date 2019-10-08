@@ -41,7 +41,7 @@ hit(counterId, {
 }, userVars);
 ```
 
-## Отправка цели
+### Отправка цели
 
 ```js
 import { hit, reachGoal } from 'lyam';
@@ -55,7 +55,7 @@ reachGoal(counterId, 'MY_GOAL_NAME');
 
 ```
 
-## Отправка цели с параметрами визита
+### Отправка цели с параметрами визита
 
 ```js
 import { hit, reachGoal } from 'lyam';
@@ -70,7 +70,7 @@ reachGoal(counterId, 'MY_GOAL_NAME', userVars);
 
 ```
 
-## Внешняя ссылка
+### Внешняя ссылка
 ```js
 import { hit, extLink } from 'lyam';
 
@@ -82,7 +82,7 @@ hit(counterId);
 extLink(counterId, 'https://externalsite.ru');
 ```
 
-## Загрузка файла
+### Загрузка файла
 ```js
 import { hit, file } from 'lyam';
 
@@ -94,7 +94,7 @@ hit(counterId);
 file(counterId, 'https://mysite.ru/file.zip');
 ```
 
-## Не отказ
+### Не отказ
 ```js
 import { hit, notBounce } from 'lyam';
 
@@ -108,7 +108,7 @@ setTimeout(() => {
 }, 15000); // 15 сек.
 ```
 
-## Параметры визита
+### Параметры визита
 ```js
 import { hit, userVars } from 'lyam';
 
@@ -118,6 +118,15 @@ hit(counterId);
 // ...
 
 userVars(counterId, { myParam: 123 });
+```
+
+## CSP
+```
+Content-Security-Policy:
+  ...
+  img-src https://mc.yandex.ru;
+  connect-src https://mc.yandex.ru;
+  ...
 ```
 
 ## Лицензия
