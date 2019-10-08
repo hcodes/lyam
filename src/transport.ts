@@ -15,7 +15,7 @@ export function sendData(counterId: string, queryParams: QueryParams): void {
     if (typeof navigator && navigator.sendBeacon) {
         navigator.sendBeacon(url, ' ');
     } else if (typeof fetch !== 'undefined') {
-        fetch(url);
+        fetch(url, { credentials: 'include' });
     } else if (typeof Image !== 'undefined') {
         new Image().src = url;
     }
