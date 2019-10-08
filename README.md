@@ -13,29 +13,26 @@
 ```js
 import { hit } from 'lyam';
 
-/**
- * Краткая запись.
- * Тоже самое, что и
- * hit('12345', {
- *    url: window.location.href,
- *    title: document.title,
- *   referrer: document.referrer
- * });
- */
-hit('12345');
+const counterId = '12345';
 
-// или
+// Если не указаны параметры, то адрес страницы берётся из location.href,
+// заголовок страницы из document.title и
+// реферер из document.referrer.
+hit(counterId);
+```
 
-// Полная запись.
-const userVars = { myParam: 123 };
-hit('12345', {
+Со всеми параметрами:
+```js
+import { hit } from 'lyam';
+
+const counterId = '12345';
+
+hit(counterId, {
   referrer: 'https://anothersite.ru',
   title: 'My document title',
   url: 'https://mysite.ru'
 }, userVars);
-
 ```
-
 
 ## Отправка цели
 
