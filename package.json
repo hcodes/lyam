@@ -1,13 +1,13 @@
 {
   "name": "lyam",
   "description": "Light Ya.Metrika for sites",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
     "url": "https://github.com/hcodes/lyam"
   },
-  "main": "dist/index.esm.js",
+  "main": "dist/index.common.js",
   "module": "dist/index.esm.js",
   "homepage": "https://github.com/hcodes/lyam",
   "license": "MIT",
@@ -27,8 +27,9 @@
   "types": "typings/index.d.ts",
   "files": [
     "src",
-    "dist/*.js",
-    "typings",
+    "dist/index.esm.js",
+    "dist/index.common.js",
+    "typings/index.d.ts",
     "README.md",
     "LICENSE"
   ],
@@ -43,8 +44,9 @@
   },
   "scripts": {
     "test": "eslint --ext .ts .",
-    "test-counter": "tsc",
-    "build": "rollup src/index.ts --config rollup.config.js --file dist/index.esm.js --format esm",
+    "build": "npm run build:esm && npm run build:common",
+    "build:esm": "rollup src/index.ts --config rollup.config.js --file dist/index.esm.js --format esm",
+    "build:common": "rollup src/index.ts --config rollup.config.js --file dist/index.common.js --format commonjs",
     "build:test": "rollup test/test.ts --config rollup.config.js --file dist/test.js --format umd"
   }
 }
