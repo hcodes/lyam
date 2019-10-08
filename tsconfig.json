@@ -8,9 +8,16 @@
             "es6",
             "dom"
         ],
+        "moduleResolution": "node",
         "noImplicitAny": true,
         "noImplicitThis": true,
         "strictNullChecks": false,
         "forceConsistentCasingInFileNames": true
-    }
+    },
+    "include": [
+        "./typings/index.d.ts"
+    ],
+    "exclude": [
+        "node_modules/"
+    ]
 }
