@@ -1,5 +1,7 @@
 const hasDocument = typeof document !== 'undefined';
 const hasWindow = typeof window !== 'undefined';
+const hasNavigator = typeof navigator != 'undefined';
+const hasScreen = typeof screen != 'undefined';
 function getCharset() {
     return hasDocument ? document.charset : '';
 }
@@ -15,23 +17,34 @@ function getReferrer() {
 function getTitle() {
     return hasDocument ? document.title : '';
 }
+function cookieEnabled() {
+    return hasNavigator ? navigator.cookieEnabled : false;
+}
+function getScreenSize() {
+    return hasScreen ? [
+        screen.width,
+        screen.height,
+        screen.colorDepth
+    ].join('x') : '';
+}
 
 function truncate(str, len) {
-    return (str || '').slice(len);
+    return (str || '').slice(0, len);
 }
 
 const MAX_TITLE_LEN = 512;
-function getParam(name, value) {
-    return name + ':' + (value === true ? '1' : value);
-}
 function addParam(result, name, value) {
-    if (value !== '' && value !== false && value !== undefined && value !== null) {
-        result.push(getParam(name, value));
+    if (value || value === 0) {
+        result.push(name + ':' + (value === true ? '1' : value));
     }
 }
 function getBrowserInfo(params, title) {
     const result = [];
-    Object.keys(params).forEach((key) => addParam(result, key, params[key]));
+    if (params) {
+        Object.keys(params).forEach((key) => addParam(result, key, params[key]));
+    }
+    addParam(result, 'c', cookieEnabled());
+    addParam(result, 's', getScreenSize());
     addParam(result, 'en', getCharset());
     addParam(result, 'rn', Math.floor(Math.random() * 1E6));
     addParam(result, 't', truncate(title, MAX_TITLE_LEN));
@@ -47,6 +60,10 @@ function queryStringify(params) {
         .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
         .join('&');
 }
+const MAX_URL_LEN = 1024;
+function prepareUrl(url) {
+    return truncate(url, MAX_URL_LEN);
+}
 
 const METRIKA_URL = 'https://mc.yandex.ru/watch/';
 function sendData(counterId, queryParams) {
@@ -58,41 +75,39 @@ function sendData(counterId, queryParams) {
         navigator.sendBeacon(url, ' ');
     }
     else if (typeof fetch !== 'undefined') {
-        fetch(url);
+        fetch(url, { credentials: 'include' });
     }
     else if (typeof Image !== 'undefined') {
         new Image().src = url;
     }
 }
 
-const MAX_URL_LEN = 1024;
 function hitExt(params) {
     const { browserInfo, counterId, pageParams, requestParams, userVars } = params;
     const data = {};
     if (pageParams.url) {
-        data['page-url'] = truncate(pageParams.url, MAX_URL_LEN);
+        data['page-url'] = prepareUrl(pageParams.url);
     }
     if (pageParams.referrer) {
-        data['page-ref'] = truncate(pageParams.referrer, MAX_URL_LEN);
+        data['page-ref'] = prepareUrl(pageParams.referrer);
     }
     data['browser-info'] = getBrowserInfo(browserInfo, pageParams.title);
     if (userVars) {
         data['site-info'] = JSON.stringify(userVars);
     }
-    Object.keys(requestParams).forEach((key) => {
-        data[key] = requestParams[key];
-    });
+    if (requestParams) {
+        Object.keys(requestParams).forEach((key) => {
+            data[key] = requestParams[key];
+        });
+    }
     sendData(counterId, data);
 }
 /**
  * Отправка хита.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {Object} hitParams -  Параметры страницы.
- * @param {string} [hitParams.url] - Адрес страницы.
- * @param {string} [hitParams.title] - Заголовок страницы.
- * @param {string} [hitParams.referrer] - Реферер страницы.
- * @param {Object} [userParams] - Параметры визитов.
+ * @param counterId - Номер счётчика.
+ * @param hitParams -  Параметры страницы.
+ * @param userVars - Параметры визитов.
  *
  * @example
  * hit('123456');
@@ -128,9 +143,9 @@ function hit(counterId, hitParams, userVars) {
 /**
  * Достижение цели.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {string} name - Название цели.
- * @param {Object} [userParams] - Параметры визитов.
+ * @param counterId - Номер счётчика.
+ * @param name - Название цели.
+ * @param userVars - Параметры визитов.
  *
  * @example
  * reachGoal('123456', 'goalName');
@@ -155,12 +170,12 @@ function reachGoal(counterId, name, userVars) {
 /**
  * Внешняя ссылка.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {string} link - Адрес ссылки.
- * @param {string} [title] - Заголовок страницы.
+ * @param counterId - Номер счётчика.
+ * @param link - Адрес ссылки.
+ * @param title - Заголовок страницы.
  *
  * @example
- * extLink('https://example.com');
+ * extLink('12356', 'https://example.com');
  */
 function extLink(counterId, link, title) {
     if (link) {
@@ -179,9 +194,9 @@ function extLink(counterId, link, title) {
 /**
  * Загрузка файла.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {string} file - Ссылка на файл.
- * @param {string} [title] - Заголовок страницы.
+ * @param counterId - Номер счётчика.
+ * @param file - Ссылка на файл.
+ * @param title - Заголовок страницы.
  *
  * @example
  * file('123456', 'https://mysite.com/file.zip');
@@ -205,11 +220,11 @@ function file(counterId, file, title) {
 /**
  * Параметры визитов.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {...*} data - Параметры визитов.
+ * @param counterId - Номер счётчика.
+ * @param data - Параметры визитов.
  *
  * @example
- * userVars(counterId, { myParam: 'value' });
+ * userVars('123456', { myParam: 'value' });
  */
 function userVars(counterId, data) {
     if (data) {
