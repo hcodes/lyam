@@ -26,6 +26,7 @@ hit(counterId);
 import { hit } from 'lyam';
 
 const counterId = '12345';
+const userVars = { myParam: 123 };
 
 hit(counterId, {
   referrer: 'https://anothersite.ru',
