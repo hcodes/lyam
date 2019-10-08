@@ -1,9 +1,7 @@
 import { getBrowserInfo } from './browserInfo';
 import { getTitle, getPageUrl, getReferrer, getHost } from './dom';
 import { sendData } from './transport';
-import { truncate } from './string';
-
-const MAX_URL_LEN = 1024;
+import { prepareUrl } from './url';
 
 interface DataParams {
     [key: string]: any;
@@ -21,11 +19,11 @@ export function hitExt(params: Lyam.HitExtParams): void {
     const data: DataParams = {};
 
     if (pageParams.url) {
-        data['page-url'] = truncate(pageParams.url, MAX_URL_LEN);
+        data['page-url'] = prepareUrl(pageParams.url);
     }
 
     if (pageParams.referrer) {
-        data['page-ref'] = truncate(pageParams.referrer, MAX_URL_LEN);
+        data['page-ref'] = prepareUrl(pageParams.referrer);
     }
 
     data['browser-info'] = getBrowserInfo(browserInfo, pageParams.title);
@@ -34,9 +32,11 @@ export function hitExt(params: Lyam.HitExtParams): void {
         data['site-info'] = JSON.stringify(userVars);
     }
 
-    Object.keys(requestParams).forEach((key) => {
-        data[key] = requestParams[key];
-    });
+    if (requestParams) {
+        Object.keys(requestParams).forEach((key) => {
+            data[key] = requestParams[key];
+        });
+    }
 
     sendData(counterId, data);
 }
@@ -44,12 +44,9 @@ export function hitExt(params: Lyam.HitExtParams): void {
 /**
  * Отправка хита.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {Object} hitParams -  Параметры страницы.
- * @param {string} [hitParams.url] - Адрес страницы.
- * @param {string} [hitParams.title] - Заголовок страницы.
- * @param {string} [hitParams.referrer] - Реферер страницы.
- * @param {Object} [userParams] - Параметры визитов.
+ * @param counterId - Номер счётчика.
+ * @param hitParams -  Параметры страницы.
+ * @param userVars - Параметры визитов.
  *
  * @example
  * hit('123456');
@@ -89,9 +86,9 @@ export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Ly
 /**
  * Достижение цели.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {string} name - Название цели.
- * @param {Object} [userParams] - Параметры визитов.
+ * @param counterId - Номер счётчика.
+ * @param name - Название цели.
+ * @param userVars - Параметры визитов.
  *
  * @example
  * reachGoal('123456', 'goalName');
@@ -118,12 +115,12 @@ export function reachGoal(counterId: string, name?: string, userVars?: Lyam.User
 /**
  * Внешняя ссылка.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {string} link - Адрес ссылки.
- * @param {string} [title] - Заголовок страницы.
+ * @param counterId - Номер счётчика.
+ * @param link - Адрес ссылки.
+ * @param title - Заголовок страницы.
  *
  * @example
- * extLink('https://example.com');
+ * extLink('12356', 'https://example.com');
  */
 export function extLink(counterId: string, link: string, title?: string): void {
     if (link) {
@@ -143,9 +140,9 @@ export function extLink(counterId: string, link: string, title?: string): void {
 /**
  * Загрузка файла.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {string} file - Ссылка на файл.
- * @param {string} [title] - Заголовок страницы.
+ * @param counterId - Номер счётчика.
+ * @param file - Ссылка на файл.
+ * @param title - Заголовок страницы.
  *
  * @example
  * file('123456', 'https://mysite.com/file.zip');
@@ -170,11 +167,11 @@ export function file(counterId: string, file: string, title?: string): void {
 /**
  * Параметры визитов.
  *
- * @param {string} counterId - Номер счётчика.
- * @param {...*} data - Параметры визитов.
+ * @param counterId - Номер счётчика.
+ * @param data - Параметры визитов.
  *
  * @example
- * userVars(counterId, { myParam: 'value' });
+ * userVars('123456', { myParam: 'value' });
  */
 export function userVars(counterId: string, data: Lyam.UserVars): void {
     if (data) {

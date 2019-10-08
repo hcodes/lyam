@@ -1,5 +1,7 @@
 const hasDocument = typeof document !== 'undefined';
 const hasWindow = typeof window !== 'undefined';
+const hasNavigator = typeof navigator != 'undefined';
+const hasScreen =  typeof screen != 'undefined';
 
 export function getCharset(): string {
     return hasDocument ? document.charset : '';
@@ -19,4 +21,16 @@ export function getReferrer(): string {
 
 export function getTitle(): string {
     return hasDocument ? document.title : '';
+}
+
+export function cookieEnabled(): boolean {
+    return hasNavigator ? navigator.cookieEnabled : false;
+}
+
+export function getScreenSize(): string {
+    return hasScreen ? [
+        screen.width,
+        screen.height,
+        screen.colorDepth
+    ].join('x') : '';
 }
