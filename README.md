@@ -73,7 +73,7 @@ hit(counterId);
 
 // ...
 
-extLink('https://externalsite.ru');
+extLink(counterId, 'https://externalsite.ru');
 ```
 
 ## Загрузка файла
@@ -85,7 +85,7 @@ hit(counterId);
 
 // ...
 
-file('https://mysite.ru/file.zip');
+file(counterId, 'https://mysite.ru/file.zip');
 ```
 
 ## Не отказ
@@ -97,7 +97,9 @@ hit(counterId);
 
 // ...
 
-setTimeout(notBounce, 15000); // 15 сек.
+setTimeout(() => {
+    notBounce(counterId);
+}, 15000); // 15 сек.
 ```
 
 ## Параметры визита
@@ -109,7 +111,7 @@ hit(counterId);
 
 // ...
 
-userVars({ myParam: 123 });
+userVars(counterId, { myParam: 123 });
 ```
 
 ## Лицензия
