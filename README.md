@@ -48,6 +48,70 @@ hit(counterId);
 // ...
 
 reachGoal(counterId, 'MY_GOAL_NAME');
+
+```
+
+## Отправка цели с параметрами визита
+
+```js
+import { hit, reachGoal } from 'lyam';
+
+const counterId = '12345';
+hit(counterId);
+
+// ...
+
+const userVars = { myParam: 123 };
+reachGoal(counterId, 'MY_GOAL_NAME', userVars);
+
+```
+
+## Внешняя ссылка
+```js
+import { hit, extLink } from 'lyam';
+
+const counterId = '12345';
+hit(counterId);
+
+// ...
+
+extLink('https://externalsite.ru');
+```
+
+## Загрузка файла
+```js
+import { hit, file } from 'lyam';
+
+const counterId = '12345';
+hit(counterId);
+
+// ...
+
+file('https://mysite.ru/file.zip');
+```
+
+## Не отказ
+```js
+import { hit, notBounce } from 'lyam';
+
+const counterId = '12345';
+hit(counterId);
+
+// ...
+
+setTimeout(notBounce, 15000); // 15 сек.
+```
+
+## Параметры визита
+```js
+import { hit, userVars } from 'lyam';
+
+const counterId = '12345';
+hit(counterId);
+
+// ...
+
+userVars({ myParam: 123 });
 ```
 
 ## Лицензия
