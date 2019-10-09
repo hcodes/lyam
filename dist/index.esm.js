@@ -1,7 +1,7 @@
-const hasDocument = typeof document !== 'undefined';
-const hasWindow = typeof window !== 'undefined';
-const hasNavigator = typeof navigator != 'undefined';
-const hasScreen = typeof screen != 'undefined';
+var hasDocument = typeof document !== 'undefined';
+var hasWindow = typeof window !== 'undefined';
+var hasNavigator = typeof navigator != 'undefined';
+var hasScreen = typeof screen != 'undefined';
 function getCharset() {
     return hasDocument ? document.charset.toLowerCase() : '';
 }
@@ -36,16 +36,16 @@ function getRandom() {
     return Math.floor(Math.random() * 1E6);
 }
 
-const MAX_TITLE_LEN = 512;
+var MAX_TITLE_LEN = 512;
 function addParam(result, name, value) {
     if (value || value === 0) {
         result.push(name + ':' + (value === true ? '1' : value));
     }
 }
 function getBrowserInfo(params, title) {
-    const result = [];
+    var result = [];
     if (params) {
-        Object.keys(params).forEach((key) => addParam(result, key, params[key]));
+        Object.keys(params).forEach(function (key) { return addParam(result, key, params[key]); });
     }
     addParam(result, 'rn', getRandom());
     addParam(result, 'c', cookieEnabled());
@@ -58,19 +58,19 @@ function getBrowserInfo(params, title) {
 function queryStringify(params) {
     return Object.keys(params)
         .filter(function (key) {
-        const val = params[key];
+        var val = params[key];
         return val !== '' && val !== undefined && val !== null;
     })
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+        .map(function (key) { return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]); })
         .join('&');
 }
-const MAX_URL_LEN = 1024;
+var MAX_URL_LEN = 1024;
 function prepareUrl(url) {
     return truncate(url, MAX_URL_LEN);
 }
 
 function sendData(counterId, queryParams) {
-    const url = 'https://mc.yandex.ru/watch/' + counterId + '?' + queryStringify(queryParams);
+    var url = 'https://mc.yandex.ru/watch/' + counterId + '?' + queryStringify(queryParams);
     if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
         navigator.sendBeacon(url, ' ');
     }
@@ -83,8 +83,8 @@ function sendData(counterId, queryParams) {
 }
 
 function hitExt(params) {
-    const { browserInfo, counterId, pageParams, userVars } = params;
-    const data = {
+    var browserInfo = params.browserInfo, counterId = params.counterId, pageParams = params.pageParams, userVars = params.userVars;
+    var data = {
         'browser-info': getBrowserInfo(browserInfo, pageParams.title),
         rn: getRandom(),
         ut: pageParams.ut
@@ -119,23 +119,23 @@ function hitExt(params) {
  * });
  */
 function hit(counterId, hitParams, userVars) {
-    const referrer = hitParams && hitParams.referrer !== undefined ?
+    var referrer = hitParams && hitParams.referrer !== undefined ?
         hitParams.referrer :
         getReferrer();
-    const title = hitParams && hitParams.title !== undefined ?
+    var title = hitParams && hitParams.title !== undefined ?
         hitParams.title :
         getTitle();
-    const url = hitParams && hitParams.url !== undefined ?
+    var url = hitParams && hitParams.url !== undefined ?
         hitParams.url :
         getPageUrl();
     hitExt({
-        counterId,
+        counterId: counterId,
         pageParams: {
-            referrer,
-            title,
-            url
+            referrer: referrer,
+            title: title,
+            url: url
         },
-        userVars
+        userVars: userVars
     });
 }
 /**
@@ -149,20 +149,20 @@ function hit(counterId, hitParams, userVars) {
  * reachGoal('123456', 'goalName');
 */
 function reachGoal(counterId, name, userVars) {
-    let referrer;
-    let url;
+    var referrer;
+    var url;
     if (name) {
         referrer = getPageUrl();
-        url = `goal://${getHost()}/${name}`;
+        url = "goal://" + getHost() + "/" + name;
     }
     else {
         referrer = getReferrer();
         url = getPageUrl();
     }
     hitExt({
-        counterId,
-        pageParams: { referrer, url },
-        userVars
+        counterId: counterId,
+        pageParams: { referrer: referrer, url: url },
+        userVars: userVars
     });
 }
 /**
@@ -179,10 +179,10 @@ function extLink(counterId, link, title) {
     if (link) {
         hitExt({
             browserInfo: { ln: true },
-            counterId,
+            counterId: counterId,
             pageParams: {
                 referrer: getPageUrl(),
-                title,
+                title: title,
                 url: link,
                 ut: 'noindex'
             }
@@ -206,10 +206,10 @@ function file(counterId, file, title) {
                 dl: true,
                 ln: true
             },
-            counterId,
+            counterId: counterId,
             pageParams: {
                 referrer: getReferrer(),
-                title,
+                title: title,
                 url: file
             }
         });
@@ -228,7 +228,7 @@ function userVars(counterId, data) {
     if (data) {
         hitExt({
             browserInfo: { pa: true },
-            counterId,
+            counterId: counterId,
             pageParams: {},
             userVars: data
         });
@@ -243,7 +243,7 @@ function userVars(counterId, data) {
 function notBounce(counterId) {
     hitExt({
         browserInfo: { nb: true },
-        counterId,
+        counterId: counterId,
         pageParams: {}
     });
 }
