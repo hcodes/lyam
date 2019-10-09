@@ -1,7 +1,7 @@
 {
   "name": "lyam",
   "description": "Light Ya.Metrika for sites",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
@@ -50,6 +50,6 @@
     "build": "npm run build:esm && npm run build:common",
     "build:esm": "rollup src/index.ts --config rollup.config.js --file dist/index.esm.js --format esm",
     "build:common": "rollup src/index.ts --config rollup.config.js --file dist/index.common.js --format commonjs",
-    "build:manual-test": "rollup manual-test/manual-test.ts --config rollup.config.js --file dist/manual-test.js --format umd"
+    "build:manual-test": "rollup manual-test/manual-test.ts --config rollup.config.js --file manual-test/manual-test.js --format umd"
   }
 }
