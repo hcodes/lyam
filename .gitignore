@@ -1,3 +1,3 @@
 node_modules
 .DS_Store
-dist/manual-test.js
+manual-test/manual-test.js
