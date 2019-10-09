@@ -1,18 +1,9 @@
 import { queryStringify } from './url';
 
-interface QueryParams {
-    [key: string]: string;
-}
+export function sendData(counterId: string, queryParams: Lyam.QueryParams): void {
+    const url = 'https://mc.yandex.ru/watch/' + counterId + '?' + queryStringify(queryParams);
 
-const METRIKA_URL = 'https://mc.yandex.ru/watch/';
-
-export function sendData(counterId: string, queryParams: QueryParams): void {
-    const url = METRIKA_URL
-        + counterId
-        + '?rn=' + (Math.floor(Math.random() * 1E6))
-        + '&' + queryStringify(queryParams);
-
-    if (typeof navigator && navigator.sendBeacon) {
+    if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
         navigator.sendBeacon(url, ' ');
     } else if (typeof fetch !== 'undefined') {
         fetch(url, { credentials: 'include' });

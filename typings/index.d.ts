@@ -3,18 +3,19 @@ declare namespace Lyam {
         referrer?: string;
         title?: string;
         url?: string;
+        ut?: string;
     }
 
     interface HitExtParams {
         counterId: string;
         browserInfo?: BrowserInfo;
         pageParams: HitParams;
-        requestParams?: RequestParams;
+        requestParams?: QueryParams;
         userVars?: UserVars;
     }
 
-    interface RequestParams {
-        [key: string]: string;
+    interface QueryParams {
+        [key: string]: string | boolean | number | undefined | null;
     }
 
     interface UserVars {
@@ -37,7 +38,7 @@ declare namespace Lyam {
         counterId: string;
         browserInfo?: BrowserInfo;
         pageParams: HitParams;
-        requestParams?: RequestParams;
+        requestParams?: QueryParams;
         userVars?: UserVars;
     }
 }

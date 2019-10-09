@@ -4,7 +4,7 @@ const hasNavigator = typeof navigator != 'undefined';
 const hasScreen =  typeof screen != 'undefined';
 
 export function getCharset(): string {
-    return hasDocument ? document.charset : '';
+    return hasDocument ? document.charset.toLowerCase() : '';
 }
 
 export function getHost(): string {

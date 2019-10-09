@@ -1,22 +1,22 @@
 import { getBrowserInfo } from './browserInfo';
 import { getTitle, getPageUrl, getReferrer, getHost } from './dom';
+import { getRandom } from './number';
 import { sendData } from './transport';
 import { prepareUrl } from './url';
-
-interface DataParams {
-    [key: string]: any;
-}
 
 export function hitExt(params: Lyam.HitExtParams): void {
     const {
         browserInfo,
         counterId,
         pageParams,
-        requestParams,
         userVars
     } = params;
 
-    const data: DataParams = {};
+    const data: Lyam.QueryParams = {
+        'browser-info': getBrowserInfo(browserInfo, pageParams.title),
+        rn: getRandom(),
+        ut: pageParams.ut
+    };
 
     if (pageParams.url) {
         data['page-url'] = prepareUrl(pageParams.url);
@@ -26,16 +26,8 @@ export function hitExt(params: Lyam.HitExtParams): void {
         data['page-ref'] = prepareUrl(pageParams.referrer);
     }
 
-    data['browser-info'] = getBrowserInfo(browserInfo, pageParams.title);
-
     if (userVars) {
         data['site-info'] = JSON.stringify(userVars);
-    }
-
-    if (requestParams) {
-        Object.keys(requestParams).forEach((key) => {
-            data[key] = requestParams[key];
-        });
     }
 
     sendData(counterId, data);
@@ -94,8 +86,8 @@ export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Ly
  * reachGoal('123456', 'goalName');
 */
 export function reachGoal(counterId: string, name?: string, userVars?: Lyam.UserVars): void {
-    let referrer;
-    let url;
+    let referrer: string;
+    let url: string;
 
     if (name) {
         referrer = getPageUrl();
@@ -130,9 +122,9 @@ export function extLink(counterId: string, link: string, title?: string): void {
             pageParams:  {
                 referrer: getPageUrl(),
                 title,
-                url: link
-            },
-            requestParams: { ut: 'noindex' }
+                url: link,
+                ut: 'noindex'
+            }
         });
     }
 }

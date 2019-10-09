@@ -1,10 +1,6 @@
 import { truncate } from './string';
 
-interface Params {
-    [key: string]: string | number | boolean | undefined | null;
-}
-
-export function queryStringify(params: Params): string {
+export function queryStringify(params: Lyam.QueryParams): string {
     return Object.keys(params)
         .filter(function(key) {
             const val = params[key];

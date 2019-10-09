@@ -34,19 +34,22 @@
     "LICENSE"
   ],
   "devDependencies": {
+    "@types/jest": "^24.0.18",
     "@typescript-eslint/eslint-plugin": "^2.3.2",
     "@typescript-eslint/parser": "^2.3.2",
     "eslint": "^6.5.1",
+    "jest": "^24.9.0",
     "rollup": "^1.23.1",
     "rollup-plugin-typescript": "^1.0.1",
+    "ts-jest": "^24.1.0",
     "tslib": "^1.10.0",
     "typescript": "^3.6.3"
   },
   "scripts": {
-    "test": "eslint --ext .ts .",
+    "test": "eslint --ext .ts . && jest .",
     "build": "npm run build:esm && npm run build:common",
     "build:esm": "rollup src/index.ts --config rollup.config.js --file dist/index.esm.js --format esm",
     "build:common": "rollup src/index.ts --config rollup.config.js --file dist/index.common.js --format commonjs",
-    "build:test": "rollup test/test.ts --config rollup.config.js --file dist/test.js --format umd"
+    "build:manual-test": "rollup manual-test/manual-test.ts --config rollup.config.js --file dist/manual-test.js --format umd"
   }
 }
