@@ -3,7 +3,7 @@ const hasWindow = typeof window !== 'undefined';
 const hasNavigator = typeof navigator != 'undefined';
 const hasScreen = typeof screen != 'undefined';
 function getCharset() {
-    return hasDocument ? document.charset : '';
+    return hasDocument ? document.charset.toLowerCase() : '';
 }
 function getHost() {
     return hasWindow ? window.location.hostname : '';
