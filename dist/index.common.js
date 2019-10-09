@@ -36,6 +36,10 @@ function truncate(str, len) {
     return (str || '').slice(0, len);
 }
 
+function getRandom() {
+    return Math.floor(Math.random() * 1E6);
+}
+
 const MAX_TITLE_LEN = 512;
 function addParam(result, name, value) {
     if (value || value === 0) {
@@ -47,10 +51,10 @@ function getBrowserInfo(params, title) {
     if (params) {
         Object.keys(params).forEach((key) => addParam(result, key, params[key]));
     }
+    addParam(result, 'rn', getRandom());
     addParam(result, 'c', cookieEnabled());
     addParam(result, 's', getScreenSize());
     addParam(result, 'en', getCharset());
-    addParam(result, 'rn', Math.floor(Math.random() * 1E6));
     addParam(result, 't', truncate(title, MAX_TITLE_LEN));
     return result.join(':');
 }
@@ -69,13 +73,9 @@ function prepareUrl(url) {
     return truncate(url, MAX_URL_LEN);
 }
 
-const METRIKA_URL = 'https://mc.yandex.ru/watch/';
 function sendData(counterId, queryParams) {
-    const url = METRIKA_URL
-        + counterId
-        + '?rn=' + (Math.floor(Math.random() * 1E6))
-        + '&' + queryStringify(queryParams);
-    if (typeof navigator && navigator.sendBeacon) {
+    const url = 'https://mc.yandex.ru/watch/' + counterId + '?' + queryStringify(queryParams);
+    if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
         navigator.sendBeacon(url, ' ');
     }
     else if (typeof fetch !== 'undefined') {
@@ -87,22 +87,20 @@ function sendData(counterId, queryParams) {
 }
 
 function hitExt(params) {
-    const { browserInfo, counterId, pageParams, requestParams, userVars } = params;
-    const data = {};
+    const { browserInfo, counterId, pageParams, userVars } = params;
+    const data = {
+        'browser-info': getBrowserInfo(browserInfo, pageParams.title),
+        rn: getRandom(),
+        ut: pageParams.ut
+    };
     if (pageParams.url) {
         data['page-url'] = prepareUrl(pageParams.url);
     }
     if (pageParams.referrer) {
         data['page-ref'] = prepareUrl(pageParams.referrer);
     }
-    data['browser-info'] = getBrowserInfo(browserInfo, pageParams.title);
     if (userVars) {
         data['site-info'] = JSON.stringify(userVars);
-    }
-    if (requestParams) {
-        Object.keys(requestParams).forEach((key) => {
-            data[key] = requestParams[key];
-        });
     }
     sendData(counterId, data);
 }
@@ -189,9 +187,9 @@ function extLink(counterId, link, title) {
             pageParams: {
                 referrer: getPageUrl(),
                 title,
-                url: link
-            },
-            requestParams: { ut: 'noindex' }
+                url: link,
+                ut: 'noindex'
+            }
         });
     }
 }
