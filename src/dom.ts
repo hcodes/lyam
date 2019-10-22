@@ -4,15 +4,17 @@ const hasNavigator = typeof navigator != 'undefined';
 const hasScreen =  typeof screen != 'undefined';
 
 export function getCharset(): string {
-    return hasDocument ? document.charset.toLowerCase() : '';
+    return hasDocument && typeof document.charset === 'string' ?
+        document.charset.toLowerCase() :
+        '';
 }
 
 export function getHost(): string {
-    return hasWindow ? window.location.hostname : '';
+    return hasWindow && window.location ? window.location.hostname : '';
 }
 
 export function getPageUrl(): string {
-    return hasWindow ? window.location.href : '';
+    return hasWindow && window.location ? window.location.href : '';
 }
 
 export function getReferrer(): string {
