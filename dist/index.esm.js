@@ -3,13 +3,15 @@ var hasWindow = typeof window !== 'undefined';
 var hasNavigator = typeof navigator != 'undefined';
 var hasScreen = typeof screen != 'undefined';
 function getCharset() {
-    return hasDocument ? document.charset.toLowerCase() : '';
+    return hasDocument && typeof document.charset === 'string' ?
+        document.charset.toLowerCase() :
+        '';
 }
 function getHost() {
-    return hasWindow ? window.location.hostname : '';
+    return hasWindow && window.location ? window.location.hostname : '';
 }
 function getPageUrl() {
-    return hasWindow ? window.location.href : '';
+    return hasWindow && window.location ? window.location.href : '';
 }
 function getReferrer() {
     return hasDocument ? document.referrer : '';

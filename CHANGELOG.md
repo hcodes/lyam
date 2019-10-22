@@ -1,3 +1,6 @@
+# v1.2.4
+Исправлена ошибка «document.charset is undefined».
+
 # v1.2.3
 - Правки typings.
 
