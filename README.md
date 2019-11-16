@@ -2,6 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/lyam.svg)](https://www.npmjs.com/package/lyam)
 [![NPM Downloads](https://img.shields.io/npm/dm/lyam.svg?style=flat)](https://www.npmjs.org/package/lyam)
+[![Build Status](https://img.shields.io/travis/hcodes/lyam.svg)](https://travis-ci.org/hcodes/lyam)
 [![Dependency Status](https://img.shields.io/david/hcodes/lyam.svg)](https://david-dm.org/hcodes/lyam)
 [![Known Vulnerabilities](https://snyk.io/test/github/hcodes/lyam/badge.svg)](https://snyk.io/test/github/hcodes/lyam)
 [![Bundlephobia](https://badgen.net/bundlephobia/minzip/lyam)](https://bundlephobia.com/result?p=lyam)
