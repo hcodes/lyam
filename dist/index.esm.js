@@ -59,10 +59,7 @@ function getBrowserInfo(params, title) {
 
 function queryStringify(params) {
     return Object.keys(params)
-        .filter(function (key) {
-        var val = params[key];
-        return val !== '' && val !== undefined && val !== null;
-    })
+        .filter(function (key) { return params[key] || params[key] === 0; })
         .map(function (key) { return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]); })
         .join('&');
 }
@@ -73,14 +70,14 @@ function prepareUrl(url) {
 
 function sendData(counterId, queryParams) {
     var url = 'https://mc.yandex.ru/watch/' + counterId + '?' + queryStringify(queryParams);
-    if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-        navigator.sendBeacon(url, ' ');
-    }
-    else if (typeof fetch !== 'undefined') {
-        fetch(url, { credentials: 'include' });
-    }
-    else if (typeof Image !== 'undefined') {
-        new Image().src = url;
+    var hasBeacon = typeof navigator !== 'undefined' && navigator.sendBeacon;
+    if (!hasBeacon || !navigator.sendBeacon(url, ' ')) {
+        if (typeof fetch !== 'undefined') {
+            fetch(url, { credentials: 'include' });
+        }
+        else if (typeof Image !== 'undefined') {
+            new Image().src = url;
+        }
     }
 }
 
