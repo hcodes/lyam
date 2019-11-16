@@ -2,10 +2,7 @@ import { truncate } from './string';
 
 export function queryStringify(params: Lyam.QueryParams): string {
     return Object.keys(params)
-        .filter(function(key) {
-            const val = params[key];
-            return val !== '' && val !== undefined && val !== null;
-        })
+        .filter(key => params[key] || params[key] === 0)
         .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
         .join('&');
 }
