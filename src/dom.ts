@@ -36,3 +36,10 @@ export function getScreenSize(): string {
         screen.colorDepth
     ].join('x') : '';
 }
+
+export function getClientSize(): string {
+    return hasWindow ? [
+        window.innerWidth,
+        window.innerHeight
+    ].join('x') : '';
+}
