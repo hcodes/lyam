@@ -65,6 +65,7 @@ export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Ly
         getPageUrl();
 
     hitExt({
+        browserInfo: { pv: true, ar: true },
         counterId,
         pageParams: {
             referrer,
@@ -98,6 +99,7 @@ export function reachGoal(counterId: string, name?: string, userVars?: Lyam.User
     }
 
     hitExt({
+        browserInfo: { ar: true },
         counterId,
         pageParams: { referrer, url },
         userVars
@@ -117,7 +119,7 @@ export function reachGoal(counterId: string, name?: string, userVars?: Lyam.User
 export function extLink(counterId: string, link: string, title?: string): void {
     if (link) {
         hitExt({
-            browserInfo: { ln: true },
+            browserInfo: { ar: true, ln: true },
             counterId,
             pageParams:  {
                 referrer: getPageUrl(),
@@ -143,6 +145,7 @@ export function file(counterId: string, file: string, title?: string): void {
     if (file) {
         hitExt({
             browserInfo: {
+                ar: true,
                 dl: true,
                 ln: true
             },
@@ -168,7 +171,7 @@ export function file(counterId: string, file: string, title?: string): void {
 export function userVars(counterId: string, data: Lyam.UserVars): void {
     if (data) {
         hitExt({
-            browserInfo: { pa: true },
+            browserInfo: { ar: true, pa: true },
             counterId,
             pageParams: {},
             userVars: data
@@ -184,7 +187,7 @@ export function userVars(counterId: string, data: Lyam.UserVars): void {
  */
 export function notBounce(counterId: string): void {
     hitExt({
-        browserInfo: { nb: true },
+        browserInfo: { ar: true, nb: true },
         counterId,
         pageParams: {}
     });

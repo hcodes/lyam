@@ -1,3 +1,3 @@
 export function getRandom(): number {
-    return Math.floor(Math.random() * 1E6);
+    return Math.floor(Math.random() * (1 << 31 - 1));
 }

@@ -29,13 +29,23 @@ function getScreenSize() {
         screen.colorDepth
     ].join('x') : '';
 }
+function getClientSize() {
+    return hasWindow ? [
+        window.innerWidth,
+        window.innerHeight
+    ].join('x') : '';
+}
 
 function truncate(str, len) {
     return (str || '').slice(0, len);
 }
 
 function getRandom() {
-    return Math.floor(Math.random() * 1E6);
+    return Math.floor(Math.random() * (1 << 31 - 1));
+}
+
+function getSeconds() {
+    return Math.round(Date.now() / 1000);
 }
 
 var MAX_TITLE_LEN = 512;
@@ -52,7 +62,11 @@ function getBrowserInfo(params, title) {
     addParam(result, 'rn', getRandom());
     addParam(result, 'c', cookieEnabled());
     addParam(result, 's', getScreenSize());
+    addParam(result, 'w', getClientSize());
     addParam(result, 'en', getCharset());
+    var time = getSeconds();
+    addParam(result, 'et', time);
+    addParam(result, 'st', time);
     addParam(result, 't', truncate(title, MAX_TITLE_LEN));
     return result.join(':');
 }
@@ -128,6 +142,7 @@ function hit(counterId, hitParams, userVars) {
         hitParams.url :
         getPageUrl();
     hitExt({
+        browserInfo: { pv: true, ar: true },
         counterId: counterId,
         pageParams: {
             referrer: referrer,
@@ -159,6 +174,7 @@ function reachGoal(counterId, name, userVars) {
         url = getPageUrl();
     }
     hitExt({
+        browserInfo: { ar: true },
         counterId: counterId,
         pageParams: { referrer: referrer, url: url },
         userVars: userVars
@@ -177,7 +193,7 @@ function reachGoal(counterId, name, userVars) {
 function extLink(counterId, link, title) {
     if (link) {
         hitExt({
-            browserInfo: { ln: true },
+            browserInfo: { ar: true, ln: true },
             counterId: counterId,
             pageParams: {
                 referrer: getPageUrl(),
@@ -202,6 +218,7 @@ function file(counterId, file, title) {
     if (file) {
         hitExt({
             browserInfo: {
+                ar: true,
                 dl: true,
                 ln: true
             },
@@ -226,7 +243,7 @@ function file(counterId, file, title) {
 function userVars(counterId, data) {
     if (data) {
         hitExt({
-            browserInfo: { pa: true },
+            browserInfo: { ar: true, pa: true },
             counterId: counterId,
             pageParams: {},
             userVars: data
@@ -241,7 +258,7 @@ function userVars(counterId, data) {
  */
 function notBounce(counterId) {
     hitExt({
-        browserInfo: { nb: true },
+        browserInfo: { ar: true, nb: true },
         counterId: counterId,
         pageParams: {}
     });
