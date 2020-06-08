@@ -1,5 +1,5 @@
 import { getBrowserInfo } from './browserInfo';
-import { getTitle, getPageUrl, getReferrer, getHost, getCookie } from './dom';
+import { getTitle, getPageUrl, getReferrer, getHost } from './dom';
 import { getRandom } from './number';
 import { sendData } from './transport';
 import { prepareUrl } from './url';
