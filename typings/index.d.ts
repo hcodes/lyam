@@ -19,7 +19,7 @@ declare namespace Lyam {
     }
 
     interface UserVars {
-        [key: string]: any;
+        [key: string]: unknown;
     }
 
     type BrowserInfoValue = boolean | string | number;
