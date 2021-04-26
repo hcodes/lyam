@@ -11,14 +11,14 @@ declare namespace Lyam {
         browserInfo?: BrowserInfo;
         pageParams: HitParams;
         requestParams?: QueryParams;
-        userVars?: UserVars;
+        params?: Params;
     }
 
     interface QueryParams {
         [key: string]: string | boolean | number | undefined | null;
     }
 
-    interface UserVars {
+    interface Params {
         [key: string]: unknown;
     }
 
@@ -39,16 +39,17 @@ declare namespace Lyam {
         browserInfo?: BrowserInfo;
         pageParams: HitParams;
         requestParams?: QueryParams;
-        userVars?: UserVars;
+        params?: Params;
     }
 }
 
 declare module 'lyam' {
     export function extLink(counterId: string, link: string, title?: string): void;
     export function file(counterId: string, file: string, title?: string): void;
-    export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Lyam.UserVars): void;
+    export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Lyam.Params): void;
     export function hitExt(params: Lyam.HitExtParams): void;
     export function notBounce(counterId: string): void;
-    export function reachGoal(counterId: string, name?: string, userVars?: Lyam.UserVars): void;
-    export function userVars(counterId: string, data: Lyam.UserVars): void;
+    export function reachGoal(counterId: string, name?: string, params?: Lyam.Params): void;
+    export function params(counterId: string, data: Lyam.Params): void;
+    export function userParams(counterId: string, data: Lyam.Params): void;
 }
