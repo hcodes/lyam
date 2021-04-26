@@ -95,8 +95,8 @@ function sendData(counterId, queryParams) {
     }
 }
 
-function hitExt(params) {
-    var browserInfo = params.browserInfo, counterId = params.counterId, pageParams = params.pageParams, userVars = params.userVars;
+function hitExt(hitExtParams) {
+    var browserInfo = hitExtParams.browserInfo, counterId = hitExtParams.counterId, pageParams = hitExtParams.pageParams, params = hitExtParams.params;
     var data = {
         'browser-info': getBrowserInfo(browserInfo, pageParams.title),
         rn: getRandom(),
@@ -108,8 +108,8 @@ function hitExt(params) {
     if (pageParams.referrer) {
         data['page-ref'] = prepareUrl(pageParams.referrer);
     }
-    if (userVars) {
-        data['site-info'] = JSON.stringify(userVars);
+    if (params) {
+        data['site-info'] = JSON.stringify(params);
     }
     sendData(counterId, data);
 }
@@ -131,7 +131,7 @@ function hitExt(params) {
  *     myParam: 'value'
  * });
  */
-function hit(counterId, hitParams, userVars) {
+function hit(counterId, hitParams, params) {
     var referrer = hitParams && hitParams.referrer !== undefined ?
         hitParams.referrer :
         getReferrer();
@@ -149,7 +149,7 @@ function hit(counterId, hitParams, userVars) {
             title: title,
             url: url
         },
-        userVars: userVars
+        params: params
     });
 }
 /**
@@ -162,7 +162,7 @@ function hit(counterId, hitParams, userVars) {
  * @example
  * reachGoal('123456', 'goalName');
 */
-function reachGoal(counterId, name, userVars) {
+function reachGoal(counterId, name, params) {
     var referrer;
     var url;
     if (name) {
@@ -177,7 +177,7 @@ function reachGoal(counterId, name, userVars) {
         browserInfo: { ar: true },
         counterId: counterId,
         pageParams: { referrer: referrer, url: url },
-        userVars: userVars
+        params: params,
     });
 }
 /**
@@ -238,15 +238,36 @@ function file(counterId, file, title) {
  * @param data - Параметры визитов.
  *
  * @example
- * userVars('123456', { myParam: 'value' });
+ * params('123456', { myParam: 'value' });
  */
-function userVars(counterId, data) {
+function params(counterId, data) {
     if (data) {
         hitExt({
             browserInfo: { ar: true, pa: true },
             counterId: counterId,
             pageParams: {},
-            userVars: data
+            params: data
+        });
+    }
+}
+/**
+ * Параметры посетителей сайта.
+ *
+ * @param counterId - Номер счётчика.
+ * @param data - Параметры.
+ *
+ * @example
+ * userParams('123456', { myParam: 'value', UserID: 123 });
+ */
+function userParams(counterId, data) {
+    if (data) {
+        hitExt({
+            browserInfo: { ar: true, pa: true },
+            counterId: counterId,
+            pageParams: {},
+            params: {
+                __ymu: data,
+            }
         });
     }
 }
@@ -264,4 +285,4 @@ function notBounce(counterId) {
     });
 }
 
-export { extLink, file, hit, hitExt, notBounce, reachGoal, userVars };
+export { extLink, file, hit, hitExt, notBounce, params, reachGoal, userParams };
