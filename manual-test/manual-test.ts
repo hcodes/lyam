@@ -1,4 +1,4 @@
-import { hit, reachGoal } from '../src/index';
+import { hit, reachGoal, params, extLink, userParams, file } from '../src/index';
 
 const counterId = '55669909';
 
@@ -9,3 +9,11 @@ hit(counterId, {
 }, { myHitParam: 456 });
 
 reachGoal(counterId, 'notificationClick', { myGoalParam: 123 });
+
+file(counterId, 'https://mysite.com/file.zip')
+
+extLink(counterId, 'https://yandex.ru');
+
+params(counterId, { myParam: 1});
+
+userParams(counterId, { myParam: 'value', UserID: 123 });
