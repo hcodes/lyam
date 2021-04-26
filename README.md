@@ -111,14 +111,26 @@ setTimeout(() => {
 
 ### Параметры визита
 ```js
-import { hit, userVars } from 'lyam';
+import { hit, params } from 'lyam';
 
 const counterId = '12345';
 hit(counterId);
 
 // ...
 
-userVars(counterId, { myParam: 123 });
+params(counterId, { myParam: 123 });
+```
+
+### Пользовательские параметры
+```js
+import { hit, userParams } from 'lyam';
+
+const counterId = '12345';
+hit(counterId);
+
+// ...
+
+userParams(counterId, { myParam: 1, UserID: 12345 });
 ```
 
 ## CSP
