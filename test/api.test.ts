@@ -2,7 +2,15 @@
  * @jest-environment jsdom
  */
 
-import { hit, reachGoal, notBounce, extLink, file, userVars } from '../src/index';
+import {
+    hit,
+    reachGoal,
+    notBounce,
+    extLink,
+    file,
+    params,
+    userParams,
+} from '../src/index';
 
 jest.mock('../src/number', () => ({
     getRandom(): number {
@@ -113,11 +121,20 @@ describe('API', () => {
         );
     });
 
-    it('userVars', () => {
-        userVars(counterId, { myParam: 123 });
+    it('params', () => {
+        params(counterId, { myParam: 123 });
 
         expect(spy).toBeCalledWith(
             'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Apa%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&site-info=%7B%22myParam%22%3A123%7D',
+            fetchOptions
+        );
+    });
+
+    it('userParams', () => {
+        userParams(counterId, { myParam: 1, UserID: 123 });
+
+        expect(spy).toBeCalledWith(
+            'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Apa%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&site-info=%7B%22__ymu%22%3A%7B%22myParam%22%3A1%2C%22UserID%22%3A123%7D%7D',
             fetchOptions
         );
     });
