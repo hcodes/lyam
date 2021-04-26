@@ -4,13 +4,13 @@ import { getRandom } from './number';
 import { sendData } from './transport';
 import { prepareUrl } from './url';
 
-export function hitExt(params: Lyam.HitExtParams): void {
+export function hitExt(hitExtParams: Lyam.HitExtParams): void {
     const {
         browserInfo,
         counterId,
         pageParams,
-        userVars
-    } = params;
+        params,
+    } = hitExtParams;
 
     const data: Lyam.QueryParams = {
         'browser-info': getBrowserInfo(browserInfo, pageParams.title),
@@ -26,8 +26,8 @@ export function hitExt(params: Lyam.HitExtParams): void {
         data['page-ref'] = prepareUrl(pageParams.referrer);
     }
 
-    if (userVars) {
-        data['site-info'] = JSON.stringify(userVars);
+    if (params) {
+        data['site-info'] = JSON.stringify(params);
     }
 
     sendData(counterId, data);
@@ -51,7 +51,7 @@ export function hitExt(params: Lyam.HitExtParams): void {
  *     myParam: 'value'
  * });
  */
-export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Lyam.UserVars): void {
+export function hit(counterId: string, hitParams?: Lyam.HitParams, params?: Lyam.Params): void {
     const referrer = hitParams && hitParams.referrer !== undefined ?
         hitParams.referrer :
         getReferrer();
@@ -72,7 +72,7 @@ export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Ly
             title,
             url
         },
-        userVars
+        params
     });
 }
 
@@ -86,7 +86,7 @@ export function hit(counterId: string, hitParams?: Lyam.HitParams, userVars?: Ly
  * @example
  * reachGoal('123456', 'goalName');
 */
-export function reachGoal(counterId: string, name?: string, userVars?: Lyam.UserVars): void {
+export function reachGoal(counterId: string, name?: string, params?: Lyam.Params): void {
     let referrer: string;
     let url: string;
 
@@ -102,7 +102,7 @@ export function reachGoal(counterId: string, name?: string, userVars?: Lyam.User
         browserInfo: { ar: true },
         counterId,
         pageParams: { referrer, url },
-        userVars
+        params,
     });
 }
 
@@ -166,15 +166,37 @@ export function file(counterId: string, file: string, title?: string): void {
  * @param data - Параметры визитов.
  *
  * @example
- * userVars('123456', { myParam: 'value' });
+ * params('123456', { myParam: 'value' });
  */
-export function userVars(counterId: string, data: Lyam.UserVars): void {
+export function params(counterId: string, data: Lyam.Params): void {
     if (data) {
         hitExt({
             browserInfo: { ar: true, pa: true },
             counterId,
             pageParams: {},
-            userVars: data
+            params: data
+        });
+    }
+}
+
+/**
+ * Параметры посетителей сайта.
+ *
+ * @param counterId - Номер счётчика.
+ * @param data - Параметры.
+ *
+ * @example
+ * userParams('123456', { myParam: 'value', UserID: 123 });
+ */
+export function userParams(counterId: string, data: Lyam.Params): void {
+    if (data) {
+        hitExt({
+            browserInfo: { ar: true, pa: true },
+            counterId,
+            pageParams: {},
+            params: {
+                __ymu: data,
+            }
         });
     }
 }
