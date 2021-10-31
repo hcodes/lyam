@@ -4,7 +4,30 @@ import { getRandom } from './number';
 import { sendData } from './transport';
 import { prepareUrl } from './url';
 
-export function hitExt(hitExtParams: Lyam.HitExtParams): void {
+export interface LyamHitParams {
+    referrer?: string;
+    title?: string;
+    url?: string;
+    ut?: string;
+}
+
+export type LyamQueryParams = Record<string, string | boolean | number | undefined | null>;
+
+export type LyamParams = Record<string, unknown>;
+
+export type LyamBrowserInfoValue = boolean | string | number;
+
+export type LyamBrowserInfo = Record<string, LyamBrowserInfoValue>;
+
+export interface LyamHitExtParams {
+    counterId: string;
+    browserInfo?: LyamBrowserInfo;
+    pageParams: LyamHitParams;
+    requestParams?: LyamQueryParams;
+    params?: LyamParams;
+}
+
+export function hitExt(hitExtParams: LyamHitExtParams): void {
     const {
         browserInfo,
         counterId,
@@ -12,7 +35,7 @@ export function hitExt(hitExtParams: Lyam.HitExtParams): void {
         params,
     } = hitExtParams;
 
-    const data: Lyam.QueryParams = {
+    const data: LyamQueryParams = {
         'browser-info': getBrowserInfo(browserInfo, pageParams.title),
         rn: getRandom(),
         ut: pageParams.ut
@@ -51,7 +74,7 @@ export function hitExt(hitExtParams: Lyam.HitExtParams): void {
  *     myParam: 'value'
  * });
  */
-export function hit(counterId: string, hitParams?: Lyam.HitParams, params?: Lyam.Params): void {
+export function hit(counterId: string, hitParams?: LyamHitParams, params?: LyamParams): void {
     const referrer = hitParams && hitParams.referrer !== undefined ?
         hitParams.referrer :
         getReferrer();
@@ -86,7 +109,7 @@ export function hit(counterId: string, hitParams?: Lyam.HitParams, params?: Lyam
  * @example
  * reachGoal('123456', 'goalName');
 */
-export function reachGoal(counterId: string, name?: string, params?: Lyam.Params): void {
+export function reachGoal(counterId: string, name?: string, params?: LyamParams): void {
     let referrer: string;
     let url: string;
 
@@ -168,7 +191,7 @@ export function file(counterId: string, file: string, title?: string): void {
  * @example
  * params('123456', { myParam: 'value' });
  */
-export function params(counterId: string, data: Lyam.Params): void {
+export function params(counterId: string, data: LyamParams): void {
     if (data) {
         hitExt({
             browserInfo: { ar: true, pa: true },
@@ -188,7 +211,7 @@ export function params(counterId: string, data: Lyam.Params): void {
  * @example
  * userParams('123456', { myParam: 'value', UserID: 123 });
  */
-export function userParams(counterId: string, data: Lyam.Params): void {
+export function userParams(counterId: string, data: LyamParams): void {
     if (data) {
         hitExt({
             browserInfo: { ar: true, pa: true },

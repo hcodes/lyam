@@ -2,16 +2,17 @@ import { getCharset, cookieEnabled, getScreenSize, getClientSize } from './dom';
 import { truncate } from './string';
 import { getRandom } from './number';
 import { getSeconds } from './time';
+import type { LyamBrowserInfoValue, LyamBrowserInfo } from './index';
 
 const MAX_TITLE_LEN = 512;
 
-function addParam(result: string[], name: string, value: Lyam.BrowserInfoValue): void {
+function addParam(result: string[], name: string, value: LyamBrowserInfoValue): void {
     if (value || value === 0) {
         result.push(name + ':' + (value === true ? '1' : value));
     }
 }
 
-export function getBrowserInfo(params: Lyam.BrowserInfo, title: string): string {
+export function getBrowserInfo(params: LyamBrowserInfo, title: string): string {
     const result: string[] = [];
 
     if (params) {

@@ -1,7 +1,7 @@
 {
   "name": "lyam",
   "description": "Light Ya.Metrika for sites",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
@@ -22,34 +22,31 @@
     "metrika"
   ],
   "engines": {
-    "node": ">= 8"
+    "node": ">= 12"
   },
-  "types": "typings/index.d.ts",
+  "typings": "dist/index.d.ts",
   "files": [
-    "src",
-    "dist/index.esm.js",
-    "dist/index.common.js",
-    "typings/index.d.ts",
+    "dist",
     "README.md",
     "LICENSE"
   ],
   "devDependencies": {
-    "@rollup/plugin-typescript": "^8.2.5",
+    "@rollup/plugin-typescript": "^8.3.0",
     "@types/jest": "^27.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.29.1",
-    "@typescript-eslint/parser": "^4.29.1",
-    "eslint": "^7.32.0",
-    "jest": "^27.0.6",
-    "rollup": "^2.56.2",
-    "ts-jest": "^27.0.4",
-    "tslib": "^2.3.0",
-    "typescript": "^4.3.5"
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
+    "@typescript-eslint/parser": "^5.2.0",
+    "del-cli": "^4.0.1",
+    "eslint": "^8.1.0",
+    "jest": "^27.3.1",
+    "rollup": "^2.58.3",
+    "ts-jest": "^27.0.7",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
   },
   "scripts": {
+    "clean": "del dist/*",
     "test": "eslint --ext .ts . && jest .",
-    "build": "npm run build:esm && npm run build:common",
-    "build:esm": "rollup src/index.ts --config rollup.config.js --file dist/index.esm.js --format esm",
-    "build:common": "rollup src/index.ts --config rollup.config.js --file dist/index.common.js --format commonjs",
+    "build": "npm run clean; rollup --config rollup.config.js",
     "build:manual-test": "rollup manual-test/manual-test.ts --config rollup.config.js --file manual-test/manual-test.js --format umd"
   }
 }

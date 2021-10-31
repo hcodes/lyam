@@ -1,6 +1,7 @@
 import { truncate } from './string';
+import type { LyamQueryParams } from './index';
 
-export function queryStringify(params: Lyam.QueryParams): string {
+export function queryStringify(params: LyamQueryParams): string {
     return Object.keys(params)
         .filter(key => params[key] || params[key] === 0)
         .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
