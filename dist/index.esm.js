@@ -87,7 +87,7 @@ function sendData(counterId, queryParams) {
     var hasBeacon = typeof navigator !== 'undefined' && navigator.sendBeacon;
     if (!hasBeacon || !navigator.sendBeacon(url, ' ')) {
         if (typeof fetch !== 'undefined') {
-            fetch(url, { credentials: 'include' });
+            fetch(url, { credentials: 'include' }).catch(function () { });
         }
         else if (typeof Image !== 'undefined') {
             new Image().src = url;
