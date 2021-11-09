@@ -7,7 +7,8 @@ export function sendData(counterId: string, queryParams: LyamQueryParams): void 
 
     if (!hasBeacon || !navigator.sendBeacon(url, ' ')) {
         if (typeof fetch !== 'undefined') {
-            fetch(url, { credentials: 'include' });
+            fetch(url, { credentials: 'include' }).catch(function() {/** unhandled rejection off */});
+
         } else if (typeof Image !== 'undefined') {
             new Image().src = url;
         }
