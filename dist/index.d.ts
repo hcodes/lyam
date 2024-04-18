@@ -4,10 +4,10 @@ export interface LyamHitParams {
     url?: string;
     ut?: string;
 }
-export declare type LyamQueryParams = Record<string, string | boolean | number | undefined | null>;
-export declare type LyamParams = Record<string, unknown>;
-export declare type LyamBrowserInfoValue = boolean | string | number;
-export declare type LyamBrowserInfo = Record<string, LyamBrowserInfoValue>;
+export type LyamQueryParams = Record<string, string | boolean | number | undefined | null>;
+export type LyamParams = Record<string, unknown>;
+export type LyamBrowserInfoValue = boolean | string | number;
+export type LyamBrowserInfo = Record<string, LyamBrowserInfoValue>;
 export interface LyamHitExtParams {
     counterId: string;
     browserInfo?: LyamBrowserInfo;

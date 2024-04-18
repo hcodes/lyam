@@ -1,7 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var hasDocument = typeof document !== 'undefined';
 var hasWindow = typeof window !== 'undefined';
 var hasNavigator = typeof navigator != 'undefined';
@@ -32,6 +30,12 @@ function getScreenSize() {
         screen.height,
         screen.colorDepth
     ].join('x') : '';
+}
+var DEFAULT_DEVICE_PIXEL_RATIO = 1;
+function getDevicePixelRatio() {
+    return hasWindow ?
+        (window.devicePixelRatio || DEFAULT_DEVICE_PIXEL_RATIO) :
+        DEFAULT_DEVICE_PIXEL_RATIO;
 }
 function getClientSize() {
     return hasWindow ? [
@@ -66,6 +70,7 @@ function getBrowserInfo(params, title) {
     addParam(result, 'rn', getRandom());
     addParam(result, 'c', cookieEnabled());
     addParam(result, 's', getScreenSize());
+    addParam(result, 'sk', getDevicePixelRatio());
     addParam(result, 'w', getClientSize());
     addParam(result, 'en', getCharset());
     var time = getSeconds();
@@ -171,7 +176,7 @@ function reachGoal(counterId, name, params) {
     var url;
     if (name) {
         referrer = getPageUrl();
-        url = "goal://" + getHost() + "/" + name;
+        url = "goal://".concat(getHost(), "/").concat(name);
     }
     else {
         referrer = getReferrer();

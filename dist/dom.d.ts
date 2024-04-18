@@ -5,4 +5,5 @@ export declare function getReferrer(): string;
 export declare function getTitle(): string;
 export declare function cookieEnabled(): boolean;
 export declare function getScreenSize(): string;
+export declare function getDevicePixelRatio(): number;
 export declare function getClientSize(): string;
