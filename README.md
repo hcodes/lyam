@@ -2,7 +2,6 @@
 
 [![NPM version](https://img.shields.io/npm/v/lyam.svg)](https://www.npmjs.com/package/lyam)
 [![NPM Downloads](https://img.shields.io/npm/dm/lyam.svg?style=flat)](https://www.npmjs.org/package/lyam)
-[![Known Vulnerabilities](https://snyk.io/test/github/hcodes/lyam/badge.svg)](https://snyk.io/test/github/hcodes/lyam)
 [![install size](https://packagephobia.com/badge?p=lyam)](https://packagephobia.com/result?p=lyam)
 
 ## Мотивация
