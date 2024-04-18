@@ -1,4 +1,4 @@
-import { getCharset, cookieEnabled, getScreenSize, getClientSize } from './dom';
+import { getCharset, cookieEnabled, getScreenSize, getClientSize, getDevicePixelRatio } from './dom';
 import { truncate } from './string';
 import { getRandom } from './number';
 import { getSeconds } from './time';
@@ -22,6 +22,7 @@ export function getBrowserInfo(params: LyamBrowserInfo, title: string): string {
     addParam(result, 'rn', getRandom());
     addParam(result, 'c', cookieEnabled());
     addParam(result, 's', getScreenSize());
+    addParam(result, 'sk', getDevicePixelRatio());
     addParam(result, 'w', getClientSize());
     addParam(result, 'en', getCharset());
 

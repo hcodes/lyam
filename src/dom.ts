@@ -37,6 +37,13 @@ export function getScreenSize(): string {
     ].join('x') : '';
 }
 
+const DEFAULT_DEVICE_PIXEL_RATIO = 1;
+export function getDevicePixelRatio(): number {
+    return hasWindow ?
+        (window.devicePixelRatio || DEFAULT_DEVICE_PIXEL_RATIO) :
+        DEFAULT_DEVICE_PIXEL_RATIO;
+}
+
 export function getClientSize(): string {
     return hasWindow ? [
         window.innerWidth,
