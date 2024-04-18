@@ -1,3 +1,6 @@
+# v3.1.0
+- Добавлен параметр `sk` devicePixelRatio.
+
 # v3.0.1
 - Убраны ошибки Unhandled rejection: Failed to fetch.
 
