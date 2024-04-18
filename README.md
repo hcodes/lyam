@@ -140,5 +140,5 @@ Content-Security-Policy:
   ...
 ```
 
-## Лицензия
+## [Лицензия](./LICENSE)
 MIT
