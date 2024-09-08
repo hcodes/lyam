@@ -141,3 +141,6 @@ Content-Security-Policy:
 
 ## [Лицензия](./LICENSE)
 MIT
+
+## Ссылки
+- [React/Preact-компонент для Яндекс Метрики](https://github.com/hcodes/react-metrika)
