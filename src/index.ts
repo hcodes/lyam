@@ -4,6 +4,8 @@ import { getRandom } from './number';
 import { sendData } from './transport';
 import { prepareUrl } from './url';
 
+export { configureTransport } from './transport';
+
 export interface LyamHitParams {
     referrer?: string;
     title?: string;

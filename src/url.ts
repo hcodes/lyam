@@ -13,3 +13,11 @@ const MAX_URL_LEN = 1024;
 export function prepareUrl(url: string): string {
     return truncate(url, MAX_URL_LEN);
 }
+
+export function normalizeOrigin(origin: string): string {
+    if (origin.endsWith('/')) {
+        return origin.slice(0, origin.length - 1)
+    }
+
+    return origin;
+}
