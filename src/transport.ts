@@ -1,8 +1,22 @@
-import { queryStringify } from './url';
+import {normalizeOrigin, queryStringify} from './url';
 import type { LyamQueryParams } from './index';
 
+interface LyamTrasportConfigParams {
+    metrikaOrigin: string;
+}
+
+let metrikaOrigin = 'https://mc.yandex.ru';
+
+/**
+ * Конфигурирует транспорт отправки событий
+ * @param params
+ */
+export function configureTransport(params: LyamTrasportConfigParams) {
+    metrikaOrigin = normalizeOrigin(params.metrikaOrigin);
+}
+
 export function sendData(counterId: string, queryParams: LyamQueryParams): void {
-    const url = 'https://mc.yandex.ru/watch/' + counterId + '?' + queryStringify(queryParams);
+    const url =  metrikaOrigin + '/watch/' + counterId + '?' + queryStringify(queryParams);
     const hasBeacon = typeof navigator !== 'undefined' && navigator.sendBeacon;
 
     if (!hasBeacon || !navigator.sendBeacon(url, ' ')) {
