@@ -1,7 +1,7 @@
 {
   "name": "lyam",
   "description": "Light Ya.Metrika for sites",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
@@ -31,15 +31,15 @@
     "LICENSE"
   ],
   "devDependencies": {
-    "@rollup/plugin-typescript": "^12.1.1",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@types/jest": "^29.5.14",
-    "@typescript-eslint/eslint-plugin": "^8.12.2",
-    "@typescript-eslint/parser": "^8.12.2",
+    "@typescript-eslint/eslint-plugin": "^8.14.0",
+    "@typescript-eslint/parser": "^8.14.0",
     "del-cli": "^6.0.0",
     "eslint": "9.14.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "rollup": "^4.24.4",
+    "rollup": "^4.27.2",
     "ts-jest": "^29.2.5",
     "tslib": "^2.8.1",
     "typescript": "^5.6.3",
