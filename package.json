@@ -36,17 +36,18 @@
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.12.2",
     "del-cli": "^6.0.0",
-    "eslint": "^9.14.0",
+    "eslint": "9.14.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "rollup": "^4.24.4",
     "ts-jest": "^29.2.5",
     "tslib": "^2.8.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.14.0"
   },
   "scripts": {
     "clean": "del dist/*",
-    "test": "eslint --ext .ts . && jest .",
+    "test": "eslint -c eslint.config.mjs . && jest .",
     "build": "npm run clean; rollup --config rollup.config.mjs",
     "build:manual-test": "rollup manual-test/manual-test.ts --config rollup.config.js --file manual-test/manual-test.js --format umd"
   }
