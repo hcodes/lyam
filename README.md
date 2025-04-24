@@ -7,7 +7,7 @@
 ## Мотивация
 [Скрипт Метрики](https://mc.yandex.ru/metrika/tag.js) занимает более 350 КБ (90 КБ в GZIP), для лёгких страниц и небольших пакетов он громоздкий.
 
-<img width="350" src="./images/feather.jpg" />
+<img width="350" src="https://raw.githubusercontent.com/hcodes/lyam/refs/heads/master/images/feather.jpg" />
 
 ## Преимущества
 - [Сверхмалый размер кода](https://bundlephobia.com/result?p=lyam).
