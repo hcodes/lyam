@@ -1,11 +1,12 @@
 {
     "exclude": ["dist", "test", "manual-test"],
     "compilerOptions": {
+        "rootDir": "src",
         "outDir": "./dist/",
         "module": "es6",
         "target": "es5",
         "declaration": true,
-        "declarationDir": ".",
+        "declarationDir": "./dist",
         "allowJs": true,
         "esModuleInterop": true,
         "lib": [

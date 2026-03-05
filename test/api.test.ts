@@ -38,7 +38,7 @@ describe('API', () => {
         it('without params', () => {
             hit(counterId);
 
-            expect(global.fetch).toBeCalledWith(
+            expect(global.fetch).toHaveBeenCalledWith(
                 'https://mc.yandex.ru/watch/123456?browser-info=pv%3A1%3Aar%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&page-url=http%3A%2F%2Flocalhost%2F',
                 fetchOptions
             );
@@ -51,7 +51,7 @@ describe('API', () => {
                 title: 'My Title'
             });
 
-            expect(global.fetch).toBeCalledWith(
+            expect(global.fetch).toHaveBeenCalledWith(
                 'https://mc.yandex.ru/watch/123456?browser-info=pv%3A1%3Aar%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000%3At%3AMy%20Title&rn=123&page-url=https%3A%2F%2Fexample.com&page-ref=https%3A%2F%2Fanothersite.com',
                 fetchOptions
             );
@@ -64,7 +64,7 @@ describe('API', () => {
                 title: 'My Title'
             }, { myParam: 123 });
 
-            expect(global.fetch).toBeCalledWith(
+            expect(global.fetch).toHaveBeenCalledWith(
                 'https://mc.yandex.ru/watch/123456?browser-info=pv%3A1%3Aar%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000%3At%3AMy%20Title&rn=123&page-url=https%3A%2F%2Fexample.com&page-ref=https%3A%2F%2Fanothersite.com&site-info=%7B%22myParam%22%3A123%7D',
                 fetchOptions
             );
@@ -75,7 +75,7 @@ describe('API', () => {
         it('without userVars', () => {
             reachGoal(counterId, 'myGoal');
 
-            expect(global.fetch).toBeCalledWith(
+            expect(global.fetch).toHaveBeenCalledWith(
                 'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&page-url=goal%3A%2F%2Flocalhost%2FmyGoal&page-ref=http%3A%2F%2Flocalhost%2F',
                 fetchOptions
             );
@@ -84,7 +84,7 @@ describe('API', () => {
         it('with userVars', () => {
             reachGoal(counterId, 'myGoal', { myParam: 123 });
 
-            expect(global.fetch).toBeCalledWith(
+            expect(global.fetch).toHaveBeenCalledWith(
                 'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&page-url=goal%3A%2F%2Flocalhost%2FmyGoal&page-ref=http%3A%2F%2Flocalhost%2F&site-info=%7B%22myParam%22%3A123%7D',
                 fetchOptions
             );
@@ -94,7 +94,7 @@ describe('API', () => {
     it('extLink', () => {
         extLink(counterId, 'https://google.com');
 
-        expect(global.fetch).toBeCalledWith(
+        expect(global.fetch).toHaveBeenCalledWith(
             'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Aln%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&ut=noindex&page-url=https%3A%2F%2Fgoogle.com&page-ref=http%3A%2F%2Flocalhost%2F',
             fetchOptions
         );
@@ -103,7 +103,7 @@ describe('API', () => {
     it('file', () => {
         file(counterId, 'https://example.com/file.zip');
 
-        expect(global.fetch).toBeCalledWith(
+        expect(global.fetch).toHaveBeenCalledWith(
             'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Adl%3A1%3Aln%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&page-url=https%3A%2F%2Fexample.com%2Ffile.zip',
             fetchOptions
         );
@@ -112,7 +112,7 @@ describe('API', () => {
     it('notBounce', () => {
         notBounce(counterId);
 
-        expect(global.fetch).toBeCalledWith(
+        expect(global.fetch).toHaveBeenCalledWith(
             'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Anb%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123',
             fetchOptions
         );
@@ -121,7 +121,7 @@ describe('API', () => {
     it('params', () => {
         params(counterId, { myParam: 123 });
 
-        expect(global.fetch).toBeCalledWith(
+        expect(global.fetch).toHaveBeenCalledWith(
             'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Apa%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&site-info=%7B%22myParam%22%3A123%7D',
             fetchOptions
         );
@@ -130,7 +130,7 @@ describe('API', () => {
     it('userParams', () => {
         userParams(counterId, { myParam: 1, UserID: 123 });
 
-        expect(global.fetch).toBeCalledWith(
+        expect(global.fetch).toHaveBeenCalledWith(
             'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Apa%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&site-info=%7B%22__ymu%22%3A%7B%22myParam%22%3A1%2C%22UserID%22%3A123%7D%7D',
             fetchOptions
         );
