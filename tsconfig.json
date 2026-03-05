@@ -1,5 +1,14 @@
 {
-    "exclude": ["dist", "test", "manual-test"],
+    "include": ["src/**/*"],
+    "exclude": [
+        "dist",
+        "test",
+        "manual-test",
+        "node_modules",
+        "rollup.config.mjs",  // Исключаем конкретный файл
+        "**/*.config.mjs",    // Или все .config.mjs файлы
+        "**/*.config.ts"      // Если есть конфиги в TS
+    ],
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "./dist/",
