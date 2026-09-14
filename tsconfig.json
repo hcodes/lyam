@@ -14,6 +14,7 @@
         "outDir": "./dist/",
         "module": "es6",
         "target": "es5",
+        "ignoreDeprecations": "6.0", // Сохраняем ES5 и node-разрешение модулей в TypeScript 6.
         "declaration": true,
         "declarationDir": "./dist",
         "allowJs": true,
@@ -23,6 +24,8 @@
             "dom"
         ],
         "moduleResolution": "node",
+        "types": ["jest", "node"],
+        "strict": false,
         "noImplicitAny": true,
         "noImplicitThis": true,
         "strictNullChecks": false,
