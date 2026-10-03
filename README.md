@@ -82,8 +82,8 @@ hit(counterId);
 
 // ...
 
-const userVars = { myParam: 123 };
-reachGoal(counterId, 'MY_GOAL_NAME', userVars);
+const params = { myParam: 123 };
+reachGoal(counterId, 'MY_GOAL_NAME', params);
 
 ```
 
