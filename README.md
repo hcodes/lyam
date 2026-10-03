@@ -41,6 +41,16 @@ hit(counterId, {
 }, userVars);
 ```
 
+### Service Worker
+
+В Service Worker нет `window` и `document`, поэтому `hit(counterId)` не сможет взять URL, заголовок и реферер страницы автоматически. Передавайте URL отслеживаемой страницы явно, получив его от клиента:
+
+```js
+import { hit } from 'lyam';
+
+hit('12345', { url: 'https://mysite.ru/current-page', title: 'Page title' });
+```
+
 ### Отправка цели
 
 ```js
@@ -132,6 +142,19 @@ hit(counterId);
 userParams(counterId, { myParam: 1, UserID: 12345 });
 ```
 
+### Международный домен Метрики
+
+По умолчанию запросы отправляются на `https://mc.yandex.ru`. Чтобы использовать [альтернативный домен Метрики](https://yandex.com/support/metrica/en/general/alternative-domain), задайте его адрес до отправки событий:
+
+```js
+import { configureTransport, hit } from 'lyam';
+
+configureTransport({ metrikaOrigin: 'https://mc.yandex.com' });
+hit('12345');
+```
+
+Настройка действует на все последующие события. К указанному адресу библиотека добавляет путь `/watch/<counterId>`.
+
 ## CSP
 ```
 Content-Security-Policy:
@@ -140,6 +163,8 @@ Content-Security-Policy:
   connect-src https://mc.yandex.ru;
   ...
 ```
+
+Если используется `https://mc.yandex.com`, добавьте этот адрес в `connect-src` и `img-src`.
 
 ## [Лицензия](./LICENSE)
 MIT

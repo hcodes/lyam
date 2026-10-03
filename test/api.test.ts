@@ -57,6 +57,15 @@ describe('API', () => {
             );
         });
 
+        it('forwards ut from page params', () => {
+            hit(counterId, { ut: 'noindex' });
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining('&ut=noindex'),
+                fetchOptions
+            );
+        });
+
         it('with user params', () => {
             hit(counterId, {
                 url: 'https://example.com',
@@ -100,13 +109,44 @@ describe('API', () => {
         );
     });
 
-    it('file', () => {
+    it('file uses the current page as referrer', () => {
         file(counterId, 'https://example.com/file.zip');
 
         expect(global.fetch).toHaveBeenCalledWith(
-            'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Adl%3A1%3Aln%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&page-url=https%3A%2F%2Fexample.com%2Ffile.zip',
+            'https://mc.yandex.ru/watch/123456?browser-info=ar%3A1%3Adl%3A1%3Aln%3A1%3Arn%3A123%3Ac%3A1%3As%3A0x0x24%3Ask%3A1%3Aw%3A1024x768%3Aen%3Autf-8%3Aet%3A1600000000%3Ast%3A1600000000&rn=123&page-url=https%3A%2F%2Fexample.com%2Ffile.zip&page-ref=http%3A%2F%2Flocalhost%2F',
             fetchOptions
         );
+    });
+
+    describe('default title', () => {
+        let originalTitle: string;
+
+        beforeEach(() => {
+            originalTitle = document.title;
+            document.title = 'Current page title';
+        });
+
+        afterEach(() => {
+            document.title = originalTitle;
+        });
+
+        it('extLink sends the document title', () => {
+            extLink(counterId, 'https://google.com');
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining('%3At%3ACurrent%20page%20title'),
+                fetchOptions
+            );
+        });
+
+        it('file sends the document title', () => {
+            file(counterId, 'https://example.com/file.zip');
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining('%3At%3ACurrent%20page%20title'),
+                fetchOptions
+            );
+        });
     });
 
     it('notBounce', () => {

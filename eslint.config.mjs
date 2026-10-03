@@ -8,6 +8,7 @@ export default [
       '.*',
       'dist/**',
       'node_modules/**',
+      'manual-test/manual-test.js',
       '*.config.js'
     ]
   },

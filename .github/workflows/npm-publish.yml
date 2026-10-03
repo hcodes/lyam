@@ -17,9 +17,10 @@ jobs:
       with:
         node-version: 24
         registry-url: https://registry.npmjs.org/
-    - name: npm install, build, and test
+    - name: Install, build, and test
       run: |
         npm ci
+        npm run build
         npm test
       env:
         CI: true

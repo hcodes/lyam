@@ -1,7 +1,7 @@
 {
   "name": "lyam",
   "description": "Light Ya.Metrika for sites",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "author": {
     "name": "Denis Seleznev",
     "email": "hcodes@yandex.ru",
@@ -53,6 +53,6 @@
     "lint": "eslint -c eslint.config.mjs .",
     "test": "npm run lint && npm run typecheck && jest .",
     "build": "npm run clean; rollup --config rollup.config.mjs",
-    "build:manual-test": "rollup manual-test/manual-test.ts --config rollup.config.js --file manual-test/manual-test.js --format umd"
+    "build:manual-test": "rollup --config rollup.manual.config.mjs"
   }
 }

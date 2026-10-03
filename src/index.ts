@@ -69,7 +69,7 @@ export function hitExt(hitExtParams: LyamHitExtParams): void {
  * hit('123456');
  *
  * hit('123456', {
- *     referer: document.referer,
+ *     referrer: document.referrer,
  *     title: document.title,
  *     url: window.location.href
  * }, {
@@ -95,7 +95,8 @@ export function hit(counterId: string, hitParams?: LyamHitParams, params?: LyamP
         pageParams: {
             referrer,
             title,
-            url
+            url,
+            ut: hitParams && hitParams.ut
         },
         params
     });
@@ -148,7 +149,7 @@ export function extLink(counterId: string, link: string, title?: string): void {
             counterId,
             pageParams:  {
                 referrer: getPageUrl(),
-                title,
+                title: title !== undefined ? title : getTitle(),
                 url: link,
                 ut: 'noindex'
             }
@@ -176,8 +177,8 @@ export function file(counterId: string, file: string, title?: string): void {
             },
             counterId,
             pageParams: {
-                referrer: getReferrer(),
-                title,
+                referrer: getPageUrl(),
+                title: title !== undefined ? title : getTitle(),
                 url: file
             }
         });
