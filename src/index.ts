@@ -25,7 +25,6 @@ export interface LyamHitExtParams {
     counterId: string;
     browserInfo?: LyamBrowserInfo;
     pageParams: LyamHitParams;
-    requestParams?: LyamQueryParams;
     params?: LyamParams;
 }
 
