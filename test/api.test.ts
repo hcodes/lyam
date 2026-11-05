@@ -10,6 +10,7 @@ import {
     file,
     params,
     userParams,
+    configureTransport,
 } from '../src/index';
 
 jest.mock('../src/number', () => ({
@@ -222,6 +223,71 @@ describe('API', () => {
                 '[lyam] Could not serialize visit params:',
                 expect.any(Error)
             );
+        });
+    });
+
+    describe('configureTransport', () => {
+        let consoleError: jest.SpyInstance;
+
+        beforeEach(() => {
+            consoleError = jest.spyOn(console, 'error').mockImplementation(() => {/** quiet in test output */});
+        });
+
+        afterEach(() => {
+            consoleError.mockRestore();
+            configureTransport({ metrikaOrigin: 'https://mc.yandex.ru' });
+        });
+
+        it('sends hits to the configured origin without trailing slashes', () => {
+            configureTransport({ metrikaOrigin: 'https://mc.yandex.com//' });
+
+            hit(counterId);
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining('https://mc.yandex.com/watch/123456?'),
+                fetchOptions
+            );
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.not.stringContaining('//watch/'),
+                fetchOptions
+            );
+            expect(consoleError).not.toHaveBeenCalled();
+        });
+
+        it('keeps the default origin when the scheme is missing', () => {
+            configureTransport({ metrikaOrigin: 'mc.yandex.com' });
+
+            hit(counterId);
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining('https://mc.yandex.ru/watch/123456?'),
+                fetchOptions
+            );
+            expect(consoleError).toHaveBeenCalledTimes(1);
+        });
+
+        it('keeps the default origin for http', () => {
+            configureTransport({ metrikaOrigin: 'http://mc.yandex.com' });
+
+            hit(counterId);
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining('https://mc.yandex.ru/watch/123456?'),
+                fetchOptions
+            );
+            expect(consoleError).toHaveBeenCalledTimes(1);
+        });
+
+        it('keeps the default origin when the host is missing', () => {
+            configureTransport({ metrikaOrigin: 'https://' });
+
+            hit(counterId);
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining('https://mc.yandex.ru/watch/123456?'),
+                fetchOptions
+            );
+            expect(consoleError).toHaveBeenCalledTimes(1);
         });
     });
 });

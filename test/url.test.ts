@@ -1,8 +1,16 @@
-import { prepareUrl, queryStringify } from '../src/url';
+import { normalizeOrigin, prepareUrl, queryStringify } from '../src/url';
 
 describe('url', () => {
     it('prepareUrl()', () => {
         expect(prepareUrl('1'.repeat(10000)).length).toEqual(1024);
+    });
+
+    it('#normalizeOrigin()', () => {
+        expect(normalizeOrigin('https://mc.yandex.com')).toEqual('https://mc.yandex.com');
+        expect(normalizeOrigin('https://mc.yandex.com/')).toEqual('https://mc.yandex.com');
+        expect(normalizeOrigin('https://mc.yandex.com///')).toEqual('https://mc.yandex.com');
+        expect(normalizeOrigin('  https://mc.yandex.com/  ')).toEqual('https://mc.yandex.com');
+        expect(normalizeOrigin('')).toEqual('');
     });
 
     it('#queryStringify()', () => {

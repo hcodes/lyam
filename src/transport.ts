@@ -5,14 +5,32 @@ interface LyamTransportConfigParams {
     metrikaOrigin: string;
 }
 
-let metrikaOrigin = 'https://mc.yandex.ru';
+const DEFAULT_METRIKA_ORIGIN = 'https://mc.yandex.ru';
+
+let metrikaOrigin = DEFAULT_METRIKA_ORIGIN;
 
 /**
- * Конфигурирует транспорт отправки событий
+ * Конфигурирует транспорт отправки событий.
+ *
+ * Принимается только https-адрес: без схемы получился бы относительный URL,
+ * и события молча ушли бы на домен самого сайта. Поэтому при неверном значении
+ * остаётся адрес по умолчанию, а ошибка выводится в `console.error`.
+ *
  * @param params
  */
 export function configureTransport(params: LyamTransportConfigParams): void {
-    metrikaOrigin = normalizeOrigin(params.metrikaOrigin);
+    const origin = normalizeOrigin(params.metrikaOrigin);
+
+    if (!/^https:\/\/[^/?#]/.test(origin)) {
+        console.error(
+            '[lyam] configureTransport: metrikaOrigin must be a full "https://" address, ' +
+            'falling back to ' + DEFAULT_METRIKA_ORIGIN
+        );
+
+        return;
+    }
+
+    metrikaOrigin = origin;
 }
 
 export function sendData(counterId: string, queryParams: LyamQueryParams): void {
