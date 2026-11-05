@@ -39,7 +39,9 @@ export function sendData(counterId: string, queryParams: LyamQueryParams): void 
 
     if (!hasBeacon || !navigator.sendBeacon(url, ' ')) {
         if (typeof fetch !== 'undefined') {
-            fetch(url, { credentials: 'include' }).catch(function() {/** unhandled rejection off */});
+            // `keepalive` разрешает запросу дожить до конца выгрузки страницы:
+            // без него хит из обработчика клика снимается вместе с документом.
+            fetch(url, { credentials: 'include', keepalive: true }).catch(function() {/** unhandled rejection off */});
 
         } else if (typeof Image !== 'undefined') {
             new Image().src = url;

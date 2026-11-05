@@ -26,7 +26,7 @@ jest.mock('../src/time', () => ({
 }));
 
 const counterId = '123456';
-const fetchOptions = { credentials: 'include' };
+const fetchOptions = { credentials: 'include', keepalive: true };
 
 describe('API', () => {
     beforeEach(() => {
