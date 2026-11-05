@@ -61,8 +61,8 @@ export function hitExt(hitExtParams: LyamHitExtParams): void {
  * Отправка хита.
  *
  * @param counterId - Номер счётчика.
- * @param hitParams -  Параметры страницы.
- * @param userVars - Параметры визитов.
+ * @param hitParams - Параметры страницы.
+ * @param params - Параметры визитов.
  *
  * @example
  * hit('123456');
@@ -106,7 +106,7 @@ export function hit(counterId: string, hitParams?: LyamHitParams, params?: LyamP
  *
  * @param counterId - Номер счётчика.
  * @param name - Название цели.
- * @param userVars - Параметры визитов.
+ * @param params - Параметры визитов.
  *
  * @example
  * reachGoal('123456', 'goalName');
@@ -139,14 +139,14 @@ export function reachGoal(counterId: string, name?: string, params?: LyamParams)
  * @param title - Заголовок страницы.
  *
  * @example
- * extLink('12356', 'https://example.com');
+ * extLink('123456', 'https://example.com');
  */
 export function extLink(counterId: string, link: string, title?: string): void {
     if (link) {
         hitExt({
             browserInfo: { ar: true, ln: true },
             counterId,
-            pageParams:  {
+            pageParams: {
                 referrer: getPageUrl(),
                 title: title !== undefined ? title : getTitle(),
                 url: link,
@@ -228,6 +228,8 @@ export function userParams(counterId: string, data: LyamParams): void {
 
 /**
  * Не отказ.
+ *
+ * @param counterId - Номер счётчика.
  *
  * @example
  * notBounce('123456');

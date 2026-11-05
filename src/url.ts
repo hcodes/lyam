@@ -16,7 +16,7 @@ export function prepareUrl(url: string): string {
 
 export function normalizeOrigin(origin: string): string {
     if (origin.endsWith('/')) {
-        return origin.slice(0, origin.length - 1)
+        return origin.slice(0, origin.length - 1);
     }
 
     return origin;

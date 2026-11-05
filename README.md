@@ -1,7 +1,7 @@
 # Лёгкая Я.Метрика
 
 [![NPM version](https://img.shields.io/npm/v/lyam.svg)](https://www.npmjs.com/package/lyam)
-[![NPM Downloads](https://img.shields.io/npm/dm/lyam.svg?style=flat)](https://www.npmjs.org/package/lyam)
+[![NPM Downloads](https://img.shields.io/npm/dm/lyam.svg?style=flat)](https://www.npmjs.com/package/lyam)
 [![install size](https://packagephobia.com/badge?p=lyam)](https://packagephobia.com/result?p=lyam)
 
 ## Мотивация

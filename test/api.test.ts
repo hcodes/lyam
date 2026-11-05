@@ -81,7 +81,7 @@ describe('API', () => {
     });
 
     describe('goal', () => {
-        it('without userVars', () => {
+        it('without params', () => {
             reachGoal(counterId, 'myGoal');
 
             expect(global.fetch).toHaveBeenCalledWith(
@@ -90,7 +90,7 @@ describe('API', () => {
             );
         });
 
-        it('with userVars', () => {
+        it('with params', () => {
             reachGoal(counterId, 'myGoal', { myParam: 123 });
 
             expect(global.fetch).toHaveBeenCalledWith(

@@ -1,3 +1,3 @@
 export function getSeconds(): number {
-    return  Math.round(Date.now() / 1000);
+    return Math.round(Date.now() / 1000);
 }
