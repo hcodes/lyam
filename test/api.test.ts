@@ -175,4 +175,53 @@ describe('API', () => {
             fetchOptions
         );
     });
+
+    describe('unserializable user params', () => {
+        let consoleError: jest.SpyInstance;
+
+        beforeEach(() => {
+            consoleError = jest.spyOn(console, 'error').mockImplementation(() => {/** quiet in test output */});
+        });
+
+        afterEach(() => {
+            consoleError.mockRestore();
+        });
+
+        it('hit() still sends the page without site-info', () => {
+            const circular: Record<string, unknown> = { name: 'loop' };
+            circular.self = circular;
+
+            expect(() => hit(counterId, { url: 'https://example.com' }, circular)).not.toThrow();
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining('page-url=https%3A%2F%2Fexample.com'),
+                fetchOptions
+            );
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.not.stringContaining('site-info'),
+                fetchOptions
+            );
+            expect(consoleError).toHaveBeenCalledTimes(1);
+        });
+
+        it('params() still sends the hit without site-info', () => {
+            const circular: Record<string, unknown> = {};
+            circular.self = circular;
+
+            expect(() => params(counterId, circular)).not.toThrow();
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining('browser-info=ar%3A1%3Apa%3A1'),
+                fetchOptions
+            );
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.not.stringContaining('site-info'),
+                fetchOptions
+            );
+            expect(consoleError).toHaveBeenCalledWith(
+                '[lyam] Could not serialize visit params:',
+                expect.any(Error)
+            );
+        });
+    });
 });

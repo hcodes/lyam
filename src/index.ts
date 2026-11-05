@@ -28,6 +28,22 @@ export interface LyamHitExtParams {
     params?: LyamParams;
 }
 
+/**
+ * Параметры визита приходят от пользовательского кода, поэтому сериализация
+ * может упасть на циклической ссылке или в `toJSON()`. Бросать исключение в
+ * обработчик страницы нельзя: ошибку выводим в `console.error`, а `site-info`
+ * просто не отправляем (`queryStringify` отбрасывает пустые значения).
+ */
+function stringifyParams(params: LyamParams): string {
+    try {
+        return JSON.stringify(params);
+    } catch (error) {
+        console.error('[lyam] Could not serialize visit params:', error);
+
+        return '';
+    }
+}
+
 export function hitExt(hitExtParams: LyamHitExtParams): void {
     const {
         browserInfo,
@@ -51,7 +67,7 @@ export function hitExt(hitExtParams: LyamHitExtParams): void {
     }
 
     if (params) {
-        data['site-info'] = JSON.stringify(params);
+        data['site-info'] = stringifyParams(params);
     }
 
     sendData(counterId, data);
