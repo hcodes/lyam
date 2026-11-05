@@ -152,10 +152,11 @@ export function reachGoal(counterId: string, name?: string, params?: LyamParams)
  *
  * @param counterId - Номер счётчика.
  * @param link - Адрес ссылки.
- * @param title - Заголовок страницы.
+ * @param title - Название ссылки, по умолчанию `document.title`.
  *
  * @example
  * extLink('123456', 'https://example.com');
+ * extLink('123456', 'https://example.com', 'Press release');
  */
 export function extLink(counterId: string, link: string, title?: string): void {
     if (link) {
@@ -177,10 +178,11 @@ export function extLink(counterId: string, link: string, title?: string): void {
  *
  * @param counterId - Номер счётчика.
  * @param file - Ссылка на файл.
- * @param title - Заголовок страницы.
+ * @param title - Название файла, по умолчанию `document.title`.
  *
  * @example
  * file('123456', 'https://mysite.com/file.zip');
+ * file('123456', 'https://mysite.com/file.zip', 'Annual report');
  */
 export function file(counterId: string, file: string, title?: string): void {
     if (file) {

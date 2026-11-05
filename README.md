@@ -97,6 +97,10 @@ hit(counterId);
 // ...
 
 extLink(counterId, 'https://externalsite.ru');
+
+// Третьим аргументом можно передать название ссылки: без него в Метрику
+// уходит `document.title`.
+extLink(counterId, 'https://externalsite.ru', 'Read the press release');
 ```
 
 ### Загрузка файла
@@ -109,6 +113,10 @@ hit(counterId);
 // ...
 
 file(counterId, 'https://mysite.ru/file.zip');
+
+// Третьим аргументом можно передать название файла: без него в Метрику
+// уходит `document.title`.
+file(counterId, 'https://mysite.ru/file.zip', 'Annual report');
 ```
 
 ### Не отказ
