@@ -1,36 +1,35 @@
-const hasDocument = typeof document !== 'undefined';
-const hasWindow = typeof window !== 'undefined';
-const hasNavigator = typeof navigator !== 'undefined';
-const hasScreen = typeof screen !== 'undefined';
-
+// Среду проверяем в каждом вызове, а не один раз при импорте: `window` и
+// `document` могут появиться позже загрузки модуля (SSR, отложенная
+// инициализация тестовой среды), и зафиксированный флаг навсегда оставил бы
+// свойства страницы пустыми.
 export function getCharset(): string {
-    return hasDocument && typeof document.charset === 'string' ?
+    return typeof document !== 'undefined' && typeof document.charset === 'string' ?
         document.charset.toLowerCase() :
         '';
 }
 
 export function getHost(): string {
-    return hasWindow && window.location ? window.location.hostname : '';
+    return typeof window !== 'undefined' && window.location ? window.location.hostname : '';
 }
 
 export function getPageUrl(): string {
-    return hasWindow && window.location ? window.location.href : '';
+    return typeof window !== 'undefined' && window.location ? window.location.href : '';
 }
 
 export function getReferrer(): string {
-    return hasDocument ? document.referrer : '';
+    return typeof document !== 'undefined' ? document.referrer : '';
 }
 
 export function getTitle(): string {
-    return hasDocument ? document.title : '';
+    return typeof document !== 'undefined' ? document.title : '';
 }
 
 export function cookieEnabled(): boolean {
-    return hasNavigator ? navigator.cookieEnabled : false;
+    return typeof navigator !== 'undefined' ? Boolean(navigator.cookieEnabled) : false;
 }
 
 export function getScreenSize(): string {
-    return hasScreen ? [
+    return typeof screen !== 'undefined' ? [
         screen.width,
         screen.height,
         screen.colorDepth
@@ -39,13 +38,13 @@ export function getScreenSize(): string {
 
 const DEFAULT_DEVICE_PIXEL_RATIO = 1;
 export function getDevicePixelRatio(): number {
-    return hasWindow ?
+    return typeof window !== 'undefined' ?
         (window.devicePixelRatio || DEFAULT_DEVICE_PIXEL_RATIO) :
         DEFAULT_DEVICE_PIXEL_RATIO;
 }
 
 export function getClientSize(): string {
-    return hasWindow ? [
+    return typeof window !== 'undefined' ? [
         window.innerWidth,
         window.innerHeight
     ].join('x') : '';
